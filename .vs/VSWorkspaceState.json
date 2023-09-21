@@ -3,9 +3,7 @@
     "",
     "\\SeatManagement2",
     "\\SeatManagement2\\Controllers",
-    "\\SeatManagement2\\Services",
-    "\\SeatManagementFE"
+    "\\SeatManagement2\\Services"
   ],
-  "SelectedNode": "\\SeatManagement2\\Services\\AllocatedSeatService.cs",
   "PreviewInSolutionExplorer": false
 }
