@@ -2,6 +2,7 @@
 using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
 using SeatManagement2.DTOs;
+using NuGet.DependencyResolver;
 
 namespace SeatManagement2.Controllers
 {
