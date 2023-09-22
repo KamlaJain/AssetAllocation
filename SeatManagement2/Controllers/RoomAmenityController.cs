@@ -50,14 +50,12 @@ namespace SeatManagement2.Controllers
             }
         }
 
-        //SET THESE METHODS AS QUERY PARAMETERS - FOLLOWING RESTAPI NAMING GUIDELINES
-        //SET CUSTOM EXCEPTIONS
-        [HttpPut("AllocateAmenity")]
-        public IActionResult AllocateToRoom(RoomAmenityDTO roomAmenityDTO)
+        [HttpPatch]
+        public IActionResult UpdateAmenity(RoomAmenityDTO roomAmenityDTO)
         {
             try
             {
-                _roomAmenityService.AllocateRoomAmenity(roomAmenityDTO);
+                _roomAmenityService.UpdateAmenitiesInRoom(roomAmenityDTO);
                 return Ok();
             }
             catch
@@ -65,18 +63,6 @@ namespace SeatManagement2.Controllers
                 return BadRequest();
             }
         }
-        [HttpPut("DeallocateAmenity")]
-        public IActionResult DeallocateFromRoom(RoomAmenityDTO roomAmenityDTO)
-        {
-            try
-            {
-                _roomAmenityService.DeallocateRoomAmenity(roomAmenityDTO);
-                return Ok();
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
+       
     }
 }

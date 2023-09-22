@@ -46,9 +46,9 @@ namespace SeatManagement2.Controllers
                 _amenityService.DeleteAmenity(amenityId);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }

@@ -30,9 +30,9 @@ namespace SeatManagement2.Controllers
                 _building.AddBuilding(buildingLookUpDTO);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -44,12 +44,12 @@ namespace SeatManagement2.Controllers
                 _building.DeleteBuilding(buildingLookUpDTO);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
-        [HttpPut]
+        [HttpPatch]
         public IActionResult EditBuilding(string buildingcode, BuildingLookUpDTO updatedBuilding)
         {
             try
@@ -57,9 +57,9 @@ namespace SeatManagement2.Controllers
                 _building.EditBuilding(buildingcode, updatedBuilding);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 

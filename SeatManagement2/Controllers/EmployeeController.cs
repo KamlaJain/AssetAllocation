@@ -30,9 +30,9 @@ namespace SeatManagement2.Controllers
                 _employeeService.AddEmployee(employeeDTO);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -44,9 +44,9 @@ namespace SeatManagement2.Controllers
                 _employeeService.DeleteEmployee(employeeId);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }

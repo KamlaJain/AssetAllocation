@@ -64,50 +64,37 @@ namespace SeatManagement2.Services
                 _repository.Save();
             }
         }
-        public void AllocateRoomAmenity(RoomAmenityDTO roomAmenityDTO)
-        {
-            var existingAllocation = _repository.GetAll()
-                .FirstOrDefault(ra => ra.AmenityId == roomAmenityDTO.AmenityId && ra.FacilityId == roomAmenityDTO.FacilityId);
 
-            if (existingAllocation == null)
+        public void UpdateAmenitiesInRoom(RoomAmenityDTO roomAmenity)
+        {
+            var reqRoomAmenity = _repository.GetAll().FirstOrDefault(ra => ra.FacilityId == roomAmenity.FacilityId && ra.AmenityId == roomAmenity.AmenityId);
+            if (reqRoomAmenity == null)
             {
-                throw new Exception("Amenity not found");
+                throw new Exception("No such Amenity in Facility");
             }
 
-            var meetingRoom = _meetingRoomRepository.GetAll().Where(ra => ra.MeetingRoomId == roomAmenityDTO.MeetingRoomId && ra.FacilityId == existingAllocation.FacilityId);
+            var meetingRoom = _meetingRoomRepository.GetAll().Where(ra => ra.MeetingRoomId == roomAmenity.MeetingRoomId && ra.FacilityId == reqRoomAmenity.FacilityId);
             if (meetingRoom == null)
             {
-                throw new Exception("Meeting Room not found.");
+                throw new Exception("Meeting Room does not exist in Facility");
             }
 
-            existingAllocation.MeetingRoomId = roomAmenityDTO.MeetingRoomId;
-
-            _repository.Update(existingAllocation);
-            _repository.Save();
-
-
-        }
-        public void DeallocateRoomAmenity(RoomAmenityDTO roomAmenityDTO)
-        {
-            var amenity = _amenityRepository.GetById(roomAmenityDTO.AmenityId);
-            if (amenity == null)
+            if (reqRoomAmenity.MeetingRoomId.HasValue)
             {
-                throw new Exception("Amenity not found.");
+                //RemoveAmenityFromMeetingroom(reqRoomAmenity);
+                reqRoomAmenity.MeetingRoomId = null;
+                _repository.Update(reqRoomAmenity);
+                _repository.Save();
             }
-
-            var existingAllocation = _repository.GetAll().FirstOrDefault(ra => ra.AmenityId == amenity.AmenityId && ra.FacilityId == roomAmenityDTO.FacilityId);
-
-            if (existingAllocation == null)
+            else
             {
-                throw new Exception("Amenity is not allocated to the Meeting Room.");
+                //AddAmenityToMeetingroom(reqRoomAmenity, roomAmenity);
+                reqRoomAmenity.MeetingRoomId = roomAmenity.MeetingRoomId;
+                _repository.Update(reqRoomAmenity);
+                _repository.Save();
             }
-
-            existingAllocation.MeetingRoomId = null;
-
-            _repository.Update(existingAllocation);
-            _repository.Save();
-
         }
-
     }
 }
+
+

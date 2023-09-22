@@ -58,7 +58,7 @@ namespace SeatManagement2.Controllers
             }
 
         }
-        [HttpPut]
+        [HttpPatch]
         public IActionResult Edit(string buildingcode, CityLookUpDTO updatedCity)
         {
             try

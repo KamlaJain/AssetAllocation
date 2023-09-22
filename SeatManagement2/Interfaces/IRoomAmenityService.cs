@@ -9,7 +9,7 @@ namespace SeatManagement2.Interfaces
         List<RoomAmenity> GetAllRoomAmenities();
         void AddRoomAmenity(RoomAmenityDTO roomAmenityDTO);
         void DeleteRoomAmenity(int roomAmenityId);
-        void AllocateRoomAmenity(RoomAmenityDTO roomAmenityDTO);
-        void DeallocateRoomAmenity(RoomAmenityDTO roomAmenityDTO);
+        void UpdateAmenitiesInRoom(RoomAmenityDTO roomAmenityDTO);
     }
 }
+

@@ -30,9 +30,9 @@ namespace SeatManagement2.Controllers
                 _meetingRoomService.AddMeetingRoom(meetingRoomDTO);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -44,9 +44,9 @@ namespace SeatManagement2.Controllers
                 _meetingRoomService.DeleteMeetingRoom(meetingRoomId);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }
