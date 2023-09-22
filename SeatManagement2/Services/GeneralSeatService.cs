@@ -116,6 +116,18 @@ namespace SeatManagement2.Services
             _repository.Save();
         }
 
+        public IEnumerable<object> GenerateSeatsReport(bool isallocatedreport)
+        {
+            if (isallocatedreport == true)
+            {
+                 return AllocatedSeatsReport();
+            }
+            else
+            {
+               return UnallocatedSeatsReport();
+            }
+        }
+
         public List<UnallocatedSeats> UnallocatedSeatsReport()
         {
             return _unallocatedseatsview.GetAll().ToList();

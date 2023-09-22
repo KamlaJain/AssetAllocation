@@ -66,31 +66,21 @@ namespace SeatManagement2.Controllers
 
         [HttpGet]
         [Route("Reports")]
-        public IActionResult GetFreeSeats()
+        public IActionResult GetFreeSeats([FromQuery]bool isallocatedreport)
         {
             try
             {
-                return Ok(_generalSeatService.UnallocatedSeatsReport());
-                //return Ok(_generalSeatService.GetAllocatedSeatsReport());
-
-
-            }
-            catch (Exception ex)
-            {
-                return BadRequest($"{ex.Message}");
-            }
-        }
-
-        [HttpGet]
-        [Route("report2")]
-        public IActionResult GetFreeSeats2()
-        {
-            try
-            {
-                //return Ok(_generalSeatService.UnallocatedSeatsReport());
-                return Ok(_generalSeatService.AllocatedSeatsReport());
-
-
+                //api/generalseat/reports/?isallocatedreport=true
+                return Ok(_generalSeatService.GenerateSeatsReport(isallocatedreport)
+);
+                /*if (isallocatedreport)
+                {
+                    return Ok(_generalSeatService.AllocatedSeatsReport());
+                }
+                else
+                {
+                    return Ok(_generalSeatService.UnallocatedSeatsReport());
+                }*/
             }
             catch (Exception ex)
             {
@@ -99,3 +89,5 @@ namespace SeatManagement2.Controllers
         }
     }
 }
+
+
