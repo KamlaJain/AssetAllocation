@@ -77,6 +77,7 @@ namespace SeatManagement2.Services
         }
         public void DeallocateEmployee(GeneralSeat reqseat)
         {
+          
             var emp = _employeerepo.GetAll().FirstOrDefault(e => e.EmployeeId == reqseat.EmployeeId);
             if (emp == null)
             {

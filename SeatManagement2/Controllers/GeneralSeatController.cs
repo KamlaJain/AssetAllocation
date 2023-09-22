@@ -30,9 +30,9 @@ namespace SeatManagement2.Controllers
                 _generalSeatService.AddGeneralSeat(generalSeatDTO);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -44,9 +44,9 @@ namespace SeatManagement2.Controllers
                 _generalSeatService.DeleteGeneralSeat(seatId);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
         [HttpPatch]

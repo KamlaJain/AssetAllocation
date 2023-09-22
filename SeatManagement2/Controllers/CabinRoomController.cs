@@ -31,9 +31,9 @@ namespace SeatManagement2.Controllers
                 _cabinRoomService.AddCabinRoom(cabinRoomDTO);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -45,9 +45,9 @@ namespace SeatManagement2.Controllers
                 _cabinRoomService.DeleteCabinRoom(cabinId);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
         [HttpPatch]
@@ -58,9 +58,9 @@ namespace SeatManagement2.Controllers
                 _cabinRoomService.UpdateEmployeeCabinAllocationStatus(seat);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }

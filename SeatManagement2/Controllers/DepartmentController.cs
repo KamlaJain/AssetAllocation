@@ -11,49 +11,49 @@ namespace SeatManagement2.Controllers
     [ApiController]
     public class DepartmentController : Controller
     {
-       
-            private readonly IDepartmentService _departmentService;
 
-            public DepartmentController(IDepartmentService departmentService)
+        private readonly IDepartmentService _departmentService;
+
+        public DepartmentController(IDepartmentService departmentService)
+        {
+            _departmentService = departmentService;
+        }
+
+        [HttpGet]
+        public IActionResult Index()
+        {
+            return Ok(_departmentService.GetAllDepartments());
+        }
+
+        [HttpPost]
+        public IActionResult Add(string departmentName)
+        {
+            try
             {
-                _departmentService = departmentService;
+                _departmentService.AddDepartment(departmentName);
+                return Ok();
             }
-
-            [HttpGet]
-            public IActionResult Index()
+            catch (Exception ex)
             {
-                return Ok(_departmentService.GetAllDepartments());
+                return BadRequest(ex.Message);
             }
+        }
 
-            [HttpPost]
-            public IActionResult Add(string departmentName)
+        [HttpDelete]
+        public IActionResult Delete(int deptId)
+        {
+            try
             {
-                try
-                {
-                    _departmentService.AddDepartment(departmentName);
-                    return Ok();
-                }
-                catch
-                {
-                    return BadRequest();
-                }
+                _departmentService.DeleteDepartment(deptId);
+                return Ok();
             }
-
-            [HttpDelete]
-            public IActionResult Delete(int deptId)
+            catch (Exception ex)
             {
-                try
-                {
-                    _departmentService.DeleteDepartment(deptId);
-                    return Ok();
-                }
-                catch
-                {
-                    return BadRequest();
-                }
+                return BadRequest(ex.Message);
             }
         }
     }
+}
 
-    
+
 

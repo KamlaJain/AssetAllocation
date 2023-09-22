@@ -37,9 +37,9 @@ namespace SeatManagement2.Controllers
                 _city.AddCity(cityLookUpDTO);
                 return Ok();
             }
-            catch 
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
 
@@ -52,9 +52,9 @@ namespace SeatManagement2.Controllers
                 _city.DeleteCity(cityLookUpDTO);
                 return Ok();
             }
-            catch 
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
 
         }
@@ -66,9 +66,9 @@ namespace SeatManagement2.Controllers
                 _city.EditCity(buildingcode, updatedCity);
                 return Ok();
             }
-            catch
+            catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex.Message);
             }
         }
     }
