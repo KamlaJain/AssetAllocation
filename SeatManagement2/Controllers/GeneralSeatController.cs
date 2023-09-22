@@ -49,12 +49,12 @@ namespace SeatManagement2.Controllers
                 return BadRequest();
             }
         }
-        [HttpPost("allocate")]
-        public IActionResult Allocate(AllocationDTO seat)
+        [HttpPatch]
+        public IActionResult Update(AllocationDTO seat)
         {
             try
             {
-                _generalSeatService.AllocateEmployeeToSeat(seat);
+                _generalSeatService.UpdateEmployeeAllocationStatus(seat);
                 return Ok();
             }
             catch(Exception ex) 
@@ -63,7 +63,7 @@ namespace SeatManagement2.Controllers
                 return BadRequest();
             }
         }
-        [HttpPost("deallocate")]
+        /*[HttpPost("deallocate")]
         public IActionResult Deallocate(AllocationDTO seat)
         {
             try
@@ -75,6 +75,6 @@ namespace SeatManagement2.Controllers
             {
                 return BadRequest();
             }
-        }
+        }*/
     }
 }

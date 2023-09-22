@@ -89,8 +89,6 @@ namespace SeatManagement2.Services
         }
         public void DeallocateRoomAmenity(RoomAmenityDTO roomAmenityDTO)
         {
-
-
             var amenity = _amenityRepository.GetById(roomAmenityDTO.AmenityId);
             if (amenity == null)
             {

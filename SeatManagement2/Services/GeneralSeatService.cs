@@ -55,61 +55,53 @@ namespace SeatManagement2.Services
             }
         }
 
-        
-        
-        public void AllocateEmployeeToSeat(AllocationDTO seat)
+
+
+        public void UpdateEmployeeAllocationStatus(AllocationDTO seat)
         {
-
-           
-            var reqseat = _repository.GetAll().FirstOrDefault(s => s.SeatNumber == seat.SeatNumber && s.FacilityId==seat.FacilityId);
-            if (reqseat == null)
-            {
-                throw new Exception("Seat not found.");
-            }
-            if (reqseat.EmployeeId != null)
-            {
-                throw new Exception("Seat is already allocated.");
-            }
-            var emp = _employeerepo.GetById(seat.EmployeeId);
-            if (emp == null)
-            {
-                throw new Exception("Employee not found.");
-            }
-            reqseat.EmployeeId = seat.EmployeeId;
-
-            emp.IsAllocated = true;
-            _employeerepo.Update(emp);
-
-
-            _repository.Update(reqseat);
-            _repository.Save();
-
-        }
-        public void DeallocateEmployeeFromSeat(AllocationDTO seat)
-        {
+            // check if such a row with given facilityId and seatnumber exists in db
             var reqseat = _repository.GetAll().FirstOrDefault(s => s.SeatNumber == seat.SeatNumber && s.FacilityId == seat.FacilityId);
             if (reqseat == null)
             {
                 throw new Exception("Seat not found.");
             }
-            if (reqseat.EmployeeId == null)
-            {
-                throw new Exception("Seat is not allocated to any employee.");
-            }
-
-            var emp = _employeerepo.GetAll().FirstOrDefault(s => s.EmployeeId == seat.EmployeeId);
+            //check if employee exists in employeetable
+            var emp = _employeerepo.GetById(seat.EmployeeId);
             if (emp == null)
             {
                 throw new Exception("Employee not found.");
             }
-            reqseat.EmployeeId = null;
 
-            emp.IsAllocated = false;
-            _employeerepo.Update(emp);
+            //to deallocate employee if given value contains an employeeId
+            if (reqseat.EmployeeId.HasValue) 
+            { 
+                DeallocateEmployee(reqseat);
+            }
+            else
+            {
+                reqseat.EmployeeId = seat.EmployeeId;
 
+                emp.IsAllocated = true;
+                _employeerepo.Update(emp);
+
+                _repository.Update(reqseat);
+                _repository.Save();
+            }
+        }
+        public void DeallocateEmployee(GeneralSeat reqseat)
+        {
+            int empId = reqseat.EmployeeId.Value;
+            var employee = _employeerepo.GetById(empId); //find and make isAllocated false in employeetable for employeeId given
+            employee.IsAllocated = false;
+            _employeerepo.Update(employee);
+
+            reqseat.EmployeeId = null; //set empId of seatsrepo to null
             _repository.Update(reqseat);
             _repository.Save();
 
         }
+
+
+
     }
 }
