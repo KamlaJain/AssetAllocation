@@ -49,5 +49,8 @@ namespace SeatManagement2.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        //api/meetingroom/{3}/amenity
+
     }
 }

@@ -35,9 +35,6 @@ builder.Services.AddSingleton<IGeneralSeatService, GeneralSeatService>();
 builder.Services.AddSingleton<IMeetingRoomService, MeetingRoomService>();
 builder.Services.AddSingleton<IRoomAmenityService, RoomAmenityService>();
 builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
-builder.Services.AddSingleton<IAllocatedSeatsReport, AllocatedSeatService>();
-builder.Services.AddSingleton<IUnallocatedSeatsReport, UnallocatedSeatService>();
-
 
 
 

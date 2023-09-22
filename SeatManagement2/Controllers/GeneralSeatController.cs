@@ -57,10 +57,44 @@ namespace SeatManagement2.Controllers
                 _generalSeatService.UpdateEmployeeSeatAllocationStatus(seat);
                 return Ok();
             }
-            catch(Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        [Route("Reports")]
+        public IActionResult GetFreeSeats()
+        {
+            try
+            {
+                return Ok(_generalSeatService.UnallocatedSeatsReport());
+                //return Ok(_generalSeatService.GetAllocatedSeatsReport());
+
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
+            }
+        }
+
+        [HttpGet]
+        [Route("report2")]
+        public IActionResult GetFreeSeats2()
+        {
+            try
+            {
+                //return Ok(_generalSeatService.UnallocatedSeatsReport());
+                return Ok(_generalSeatService.AllocatedSeatsReport());
+
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
             }
         }
     }

@@ -10,5 +10,8 @@ namespace SeatManagement2.Interfaces
         void AddGeneralSeat(GeneralSeatDTO generalSeatDTO);
         void DeleteGeneralSeat(int seatId);
         void UpdateEmployeeSeatAllocationStatus(GeneralSeatDTO seat);
+
+        List<UnallocatedSeats> UnallocatedSeatsReport();
+        List<AllocatedSeats> AllocatedSeatsReport();
     }
 }

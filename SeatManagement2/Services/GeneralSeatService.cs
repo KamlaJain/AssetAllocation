@@ -12,12 +12,16 @@ namespace SeatManagement2.Services
         private readonly IRepository<GeneralSeat> _repository;
         private readonly IRepository<Facility> _frepository;
         private readonly IRepository<Employee> _employeerepo;
+        private readonly IRepository<UnallocatedSeats> _unallocatedseatsview;
+        private readonly IRepository<AllocatedSeats> _allocatedseatsview;
 
-        public GeneralSeatService(IRepository<GeneralSeat> repository, IRepository<Facility> facilityrepository, IRepository<Employee> employeerepo)
+        public GeneralSeatService(IRepository<GeneralSeat> repository, IRepository<Facility> facilityrepository, IRepository<Employee> employeerepo, IRepository<UnallocatedSeats> unallocatedseatsrepo, IRepository<AllocatedSeats> allocatedseatsrepo)
         {
             _repository = repository;
             _frepository = facilityrepository;
             _employeerepo = employeerepo;
+            _unallocatedseatsview = unallocatedseatsrepo;
+            _allocatedseatsview = allocatedseatsrepo;
         }
 
         public List<GeneralSeat> GetAllGeneralSeats()
@@ -64,10 +68,10 @@ namespace SeatManagement2.Services
             {
                 throw new Exception("Seat not found.");
             }
-            
+
             //to deallocate employee if given value contains an employeeId
-            if (reqseat.EmployeeId.HasValue) 
-            { 
+            if (reqseat.EmployeeId.HasValue)
+            {
                 DeallocateEmployee(reqseat);
             }
             else
@@ -77,7 +81,7 @@ namespace SeatManagement2.Services
         }
         public void DeallocateEmployee(GeneralSeat reqseat)
         {
-          
+
             var emp = _employeerepo.GetAll().FirstOrDefault(e => e.EmployeeId == reqseat.EmployeeId);
             if (emp == null)
             {
@@ -112,7 +116,14 @@ namespace SeatManagement2.Services
             _repository.Save();
         }
 
+        public List<UnallocatedSeats> UnallocatedSeatsReport()
+        {
+            return _unallocatedseatsview.GetAll().ToList();
+        }
 
-
+        public List<AllocatedSeats> AllocatedSeatsReport()
+        {
+            return _allocatedseatsview.GetAll().ToList();    
+        }
     }
 }
