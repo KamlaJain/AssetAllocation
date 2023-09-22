@@ -9,7 +9,6 @@ namespace SeatManagement2.Interfaces
         List<CabinRoom> GetAllCabinRooms();
         void AddCabinRoom(CabinRoomDTO cabinRoomDTO);
         void DeleteCabinRoom(int cabinId);
-        void AllocateEmployeeToCabin(AllocationDTO seat);
-        //void DeallocateEmployeeFromCabin(AllocationDTO seat);
+        void UpdateEmployeeCabinAllocationStatus(CabinRoomDTO seat);
     }
 }

@@ -50,25 +50,12 @@ namespace SeatManagement2.Controllers
                 return BadRequest();
             }
         }
-        [HttpPost("allocate")]
-        public IActionResult Allocate(AllocationDTO seat)
+        [HttpPatch]
+        public IActionResult Update(CabinRoomDTO seat)
         {
             try
             {
-                _cabinRoomService.AllocateEmployeeToCabin(seat);
-                return Ok();
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }
-        [HttpPost("deallocate")]
-        public IActionResult Deallocate(AllocationDTO seat)
-        {
-            try
-            {
-                _cabinRoomService.DeallocateEmployeeFromCabin(seat);
+                _cabinRoomService.UpdateEmployeeCabinAllocationStatus(seat);
                 return Ok();
             }
             catch
