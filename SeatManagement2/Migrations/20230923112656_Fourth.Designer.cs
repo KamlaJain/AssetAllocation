@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SeatManagement2;
 
@@ -11,9 +12,10 @@ using SeatManagement2;
 namespace SeatManagement2.Migrations
 {
     [DbContext(typeof(SeatManagementContext))]
-    partial class SeatManagementContextModelSnapshot : ModelSnapshot
+    [Migration("20230923112656_Fourth")]
+    partial class Fourth
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -8,7 +8,4 @@ namespace SeatManagement2.Interfaces
         void AddAmenity(string amenityName);
         void DeleteAmenity(int amenityId);
     }
-
-
-
 }

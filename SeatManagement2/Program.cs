@@ -23,6 +23,9 @@ builder.Services.AddSingleton<IRepository<MeetingRoom>, Repository<MeetingRoom>>
 builder.Services.AddSingleton<IRepository<RoomAmenity>, Repository<RoomAmenity>>();
 builder.Services.AddSingleton<IRepository<AllocatedSeats>, Repository<AllocatedSeats>>();
 builder.Services.AddSingleton<IRepository<UnallocatedSeats>, Repository<UnallocatedSeats>>();
+builder.Services.AddSingleton<IRepository<UnallocatedCabinsView>, Repository<UnallocatedCabinsView>>();
+builder.Services.AddSingleton<IRepository<AllocatedCabinsView>, Repository<AllocatedCabinsView>>();
+
 
 
 builder.Services.AddSingleton<ICityService, CityService>();

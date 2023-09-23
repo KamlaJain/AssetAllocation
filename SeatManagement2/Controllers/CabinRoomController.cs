@@ -11,10 +11,12 @@ namespace SeatManagement2.Controllers
     public class CabinRoomController : ControllerBase
     {
         private readonly ICabinRoomService _cabinRoomService;
+        private readonly IReportService _reportService;
 
-        public CabinRoomController(ICabinRoomService cabinRoomService)
+        public CabinRoomController(ICabinRoomService cabinRoomService, IReportService reportService)
         {
             _cabinRoomService = cabinRoomService;
+            _reportService = reportService;
         }
 
         [HttpGet]
@@ -61,6 +63,22 @@ namespace SeatManagement2.Controllers
             catch (Exception ex)
             {
                 return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("Reports")]
+        public IActionResult GetReports([FromQuery] bool isallocatedreport, [FromQuery] int filterChoice, [FromQuery] FilterDTO filterType)
+        {
+            try
+            {
+                //api/generalseat/reports/?isallocatedreport=true
+                return Ok(_reportService.GenerateCabinsReport(isallocatedreport, filterChoice, filterType));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex.Message}");
             }
         }
     }

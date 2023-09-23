@@ -31,7 +31,14 @@ namespace SeatManagement2
                 .Entity<UnallocatedSeats>()
                 .ToView("UnallocatedSeats")
                 .HasKey(e => new { e.FacilityName, e.SeatNumber });
-
+            modelBuilder
+                .Entity<AllocatedCabinsView>()
+                .ToView("AllocatedCabinsView")
+                .HasKey(e => new { e.FacilityName, e.CabinNumber, e.EmployeeId });
+            modelBuilder
+                .Entity<UnallocatedCabinsView>()
+                .ToView("UnallocatedCabinsView")
+                .HasKey (e => new { e.FacilityName,e.CabinNumber});
         }
 
     }
