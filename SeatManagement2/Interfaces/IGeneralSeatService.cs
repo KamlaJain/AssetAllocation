@@ -10,9 +10,6 @@ namespace SeatManagement2.Interfaces
         void AddGeneralSeat(GeneralSeatDTO generalSeatDTO);
         void DeleteGeneralSeat(int seatId);
         void UpdateEmployeeSeatAllocationStatus(GeneralSeatDTO seat);
-        IEnumerable<Object> GenerateSeatsReport(bool isallocatedreport, int filterChoice, FilterDTO filterType);
-
-        /*List<UnallocatedSeats> UnallocatedSeatsReport();
-        List<AllocatedSeats> AllocatedSeatsReport();*/
+     
     }
 }

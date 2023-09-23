@@ -10,10 +10,12 @@ namespace SeatManagement2.Controllers
     public class GeneralSeatController : ControllerBase
     {
         private readonly IGeneralSeatService _generalSeatService;
+        private readonly IReportService _reportService;
 
-        public GeneralSeatController(IGeneralSeatService generalSeatService)
+        public GeneralSeatController(IGeneralSeatService generalSeatService, IReportService reportService)
         {
             _generalSeatService = generalSeatService;
+            _reportService = reportService;
         }
 
         [HttpGet]
@@ -71,7 +73,7 @@ namespace SeatManagement2.Controllers
             try
             {
                 //api/generalseat/reports/?isallocatedreport=true
-                return Ok(_generalSeatService.GenerateSeatsReport(isallocatedreport, filterChoice, filterType));
+                return Ok(_reportService.GenerateSeatsReport(isallocatedreport, filterChoice, filterType));
                
             }
             catch (Exception ex)
