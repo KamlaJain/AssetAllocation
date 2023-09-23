@@ -14,14 +14,16 @@ namespace SeatManagement2.Services
         private readonly IRepository<Employee> _employeerepo;
         private readonly IRepository<UnallocatedSeats> _unallocatedseatsview;
         private readonly IRepository<AllocatedSeats> _allocatedseatsview;
+        private readonly IRepository<BuildingLookUp> _buildingrepository;
 
-        public GeneralSeatService(IRepository<GeneralSeat> repository, IRepository<Facility> facilityrepository, IRepository<Employee> employeerepo, IRepository<UnallocatedSeats> unallocatedseatsrepo, IRepository<AllocatedSeats> allocatedseatsrepo)
+        public GeneralSeatService(IRepository<GeneralSeat> repository, IRepository<Facility> facilityrepository, IRepository<Employee> employeerepo, IRepository<UnallocatedSeats> unallocatedseatsrepo, IRepository<AllocatedSeats> allocatedseatsrepo, IRepository<BuildingLookUp> buildingrepository)
         {
             _repository = repository;
             _frepository = facilityrepository;
             _employeerepo = employeerepo;
             _unallocatedseatsview = unallocatedseatsrepo;
             _allocatedseatsview = allocatedseatsrepo;
+            _buildingrepository = buildingrepository;
         }
 
         public List<GeneralSeat> GetAllGeneralSeats()
@@ -116,15 +118,51 @@ namespace SeatManagement2.Services
             _repository.Save();
         }
 
-        public IEnumerable<object> GenerateSeatsReport(bool isallocatedreport)
+        public IEnumerable<object> GenerateSeatsReport(bool isallocatedreport, int filterChoice, FilterDTO filterType)
         {
             if (isallocatedreport == true)
             {
-                 return AllocatedSeatsReport();
+                if (filterChoice == 1) //filterByBuilding
+                {
+                    var reqBuilding = _buildingrepository.GetAll().Where(b => b.BuildingId == filterType.BuildingId);
+                    if (reqBuilding==null)
+                    {
+                        throw new Exception("No buildings found");
+                    }
+                    var reqBuildingCode = reqBuilding.Select(b => b.BuildingCode);
+                    var allocatedSeatsInBuilding = _allocatedseatsview.GetAll().Where(a => reqBuildingCode.Contains(a.BuildingCode));
+                    return allocatedSeatsInBuilding.ToList();
+                }
+
+                if (filterChoice == 2) //filterbyFacility
+                {
+                    var reqFacility = _frepository.GetAll().Where(f => f.FacilityId == filterType.FacilityId);
+                    if (reqFacility==null)
+                    {
+                        throw new Exception("No facilities found");
+                    }
+                    var reqFacilityName = reqFacility.Select(f => f.FacilityName);
+                    var allocatedSeatsInFacility = _allocatedseatsview.GetAll().Where(a => reqFacilityName.Contains(a.FacilityName));
+                    return allocatedSeatsInFacility.ToList();
+                }
+
+                if (filterChoice == 3) //filterByFloor
+                {
+                    var reqFloor = _frepository.GetAll().Where(f => f.FloorNumber == filterType.FloorNumber);
+                    if (reqFloor == null)
+                    {
+                        throw new Exception("No facilities in entered floor found");
+                    }
+                    var reqFloorNumber = reqFloor.Select(f => f.FloorNumber);
+                    var allocatedSeatsInFloor = _allocatedseatsview.GetAll().Where(f=>reqFloorNumber.Contains(f.FloorNumber));
+                    return allocatedSeatsInFloor.ToList();
+                    //return reqFloor.ToList();
+                }
+                return AllocatedSeatsReport();
             }
             else
             {
-               return UnallocatedSeatsReport();
+                return UnallocatedSeatsReport();
             }
         }
 
@@ -135,7 +173,7 @@ namespace SeatManagement2.Services
 
         public List<AllocatedSeats> AllocatedSeatsReport()
         {
-            return _allocatedseatsview.GetAll().ToList();    
+            return _allocatedseatsview.GetAll().ToList();
         }
     }
 }
