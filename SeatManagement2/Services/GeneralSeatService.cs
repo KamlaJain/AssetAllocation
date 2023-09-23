@@ -124,56 +124,98 @@ namespace SeatManagement2.Services
             {
                 if (filterChoice == 1) //filterByBuilding
                 {
-                    var reqBuilding = _buildingrepository.GetAll().Where(b => b.BuildingId == filterType.BuildingId);
-                    if (reqBuilding==null)
-                    {
-                        throw new Exception("No buildings found");
-                    }
+                    var reqBuilding = ApplyBuildingFilter(filterType);
                     var reqBuildingCode = reqBuilding.Select(b => b.BuildingCode);
-                    var allocatedSeatsInBuilding = _allocatedseatsview.GetAll().Where(a => reqBuildingCode.Contains(a.BuildingCode));
+                    var allocatedSeatsInBuilding = GetAllocatedSeatsReport().Where(a => reqBuildingCode.Contains(a.BuildingCode));
                     return allocatedSeatsInBuilding.ToList();
                 }
 
                 if (filterChoice == 2) //filterbyFacility
                 {
-                    var reqFacility = _frepository.GetAll().Where(f => f.FacilityId == filterType.FacilityId);
-                    if (reqFacility==null)
-                    {
-                        throw new Exception("No facilities found");
-                    }
+                    var reqFacility = ApplyFacilityFilter(filterType);
                     var reqFacilityName = reqFacility.Select(f => f.FacilityName);
-                    var allocatedSeatsInFacility = _allocatedseatsview.GetAll().Where(a => reqFacilityName.Contains(a.FacilityName));
+                    var allocatedSeatsInFacility = GetAllocatedSeatsReport().Where(a => reqFacilityName.Contains(a.FacilityName));
                     return allocatedSeatsInFacility.ToList();
                 }
 
                 if (filterChoice == 3) //filterByFloor
                 {
-                    var reqFloor = _frepository.GetAll().Where(f => f.FloorNumber == filterType.FloorNumber);
-                    if (reqFloor == null)
-                    {
-                        throw new Exception("No facilities in entered floor found");
-                    }
+                    var reqFloor = ApplyFloorFilter(filterType);
                     var reqFloorNumber = reqFloor.Select(f => f.FloorNumber);
-                    var allocatedSeatsInFloor = _allocatedseatsview.GetAll().Where(f=>reqFloorNumber.Contains(f.FloorNumber));
+                    var allocatedSeatsInFloor = GetAllocatedSeatsReport().Where(f=>reqFloorNumber.Contains(f.FloorNumber));
                     return allocatedSeatsInFloor.ToList();
-                    //return reqFloor.ToList();
                 }
-                return AllocatedSeatsReport();
+
+                return GetAllocatedSeatsReport();
             }
+
             else
             {
-                return UnallocatedSeatsReport();
+                if (filterChoice == 1) //filterByBuilding
+                {
+                    var reqBuilding = ApplyBuildingFilter(filterType);
+                    var reqBuildingCode = reqBuilding.Select(b => b.BuildingCode);
+                    var unallocatedSeatsInBuilding = GetUnallocatedSeatsReport().Where(a => reqBuildingCode.Contains(a.BuildingCode));
+                    return unallocatedSeatsInBuilding.ToList();
+                }
+
+                if (filterChoice == 2) //filterbyFacility
+                {
+                    var reqFacility = ApplyFacilityFilter(filterType);
+                    var reqFacilityName = reqFacility.Select(f => f.FacilityName);
+                    var unallocatedSeatsInFacility = GetUnallocatedSeatsReport().Where(a => reqFacilityName.Contains(a.FacilityName));
+                    return unallocatedSeatsInFacility.ToList();
+                }
+
+                if (filterChoice == 3) //filterByFloor
+                {
+                    var reqFloor = ApplyFloorFilter(filterType);
+                    var reqFloorNumber = reqFloor.Select(f => f.FloorNumber);
+                    var unallocatedSeatsInFloor = GetUnallocatedSeatsReport().Where(f => reqFloorNumber.Contains(f.FloorNumber));
+                    return unallocatedSeatsInFloor.ToList();
+                }
+                return GetUnallocatedSeatsReport();
             }
         }
 
-        public List<UnallocatedSeats> UnallocatedSeatsReport()
+        public IEnumerable<UnallocatedSeats> GetUnallocatedSeatsReport()
         {
             return _unallocatedseatsview.GetAll().ToList();
         }
 
-        public List<AllocatedSeats> AllocatedSeatsReport()
+        public IEnumerable<AllocatedSeats> GetAllocatedSeatsReport()
         {
             return _allocatedseatsview.GetAll().ToList();
         }
-    }
+
+        public IEnumerable<BuildingLookUp> ApplyBuildingFilter(FilterDTO filterType)
+        {
+            var reqBuilding = _buildingrepository.GetAll().Where(b => b.BuildingId == filterType.BuildingId);
+            if (reqBuilding == null)
+            {
+                throw new Exception("No buildings found");
+            }
+            return reqBuilding.ToList();
+        }
+
+        public IEnumerable<Facility> ApplyFacilityFilter(FilterDTO filterType)
+        {
+            var reqFacility = _frepository.GetAll().Where(f => f.FacilityId == filterType.FacilityId);
+            if (reqFacility == null)
+            {
+                throw new Exception("No facilities found");
+            }
+            return reqFacility.ToList();
+        }
+        public IEnumerable<Facility> ApplyFloorFilter(FilterDTO filterType)
+        {
+            var reqFloor = _frepository.GetAll().Where(f => f.FloorNumber == filterType.FloorNumber);
+            if (reqFloor == null)
+            {
+                throw new Exception("No facilities in entered floor found");
+            }
+            return reqFloor.ToList();
+        }
+       
+}
 }
