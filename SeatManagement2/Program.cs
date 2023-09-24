@@ -10,7 +10,24 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddDbContext<SeatManagementContext>(options =>
-           options.UseSqlServer("name=ConnectionStrings:DefaultConnection"),ServiceLifetime.Singleton);
+           options.UseSqlServer("name=ConnectionStrings:DefaultConnection"), ServiceLifetime.Singleton);
+
+builder.Services.AddAuthentication("MyCookieAuth").AddCookie("MyCookieAuth", options =>
+{
+    options.Cookie.Name = "MyCookieAuth";
+    options.Events.OnRedirectToLogin = context =>
+    {
+        context.Response.StatusCode = 401;
+        return Task.CompletedTask;
+    };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly",
+        policy => policy.RequireRole("Admin"));
+});
+
 builder.Services.AddSingleton<IRepository<CityLookUp>, Repository<CityLookUp>>();
 builder.Services.AddSingleton<IRepository<BuildingLookUp>, Repository<BuildingLookUp>>();
 builder.Services.AddSingleton<IRepository<Facility>, Repository<Facility>>();
@@ -26,8 +43,6 @@ builder.Services.AddSingleton<IRepository<UnallocatedSeats>, Repository<Unalloca
 builder.Services.AddSingleton<IRepository<UnallocatedCabinsView>, Repository<UnallocatedCabinsView>>();
 builder.Services.AddSingleton<IRepository<AllocatedCabinsView>, Repository<AllocatedCabinsView>>();
 
-
-
 builder.Services.AddSingleton<ICityService, CityService>();
 builder.Services.AddSingleton<IBuildingService, BuildingService>();
 builder.Services.AddSingleton<IFacilityService, FacilityService>();
@@ -39,9 +54,6 @@ builder.Services.AddSingleton<IMeetingRoomService, MeetingRoomService>();
 builder.Services.AddSingleton<IRoomAmenityService, RoomAmenityService>();
 builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
 builder.Services.AddSingleton<IReportService, ReportService>();
-
-
-
 
 
 builder.Services.AddControllers();
@@ -60,6 +72,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

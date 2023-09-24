@@ -15,13 +15,10 @@ namespace SeatManagement2.Services
         public EmployeeService(IRepository<Employee> repository)
         {
             _repository = repository;
-           
         }
 
         public List<Employee> GetAllEmployees(int pageNumber, int pageSize)
         {
-            //int _pageNumber = 1;
-            //int _pageSize = 2;
             var paginatedEmployeeList= _repository
                 .GetAll()
                 .Skip((pageNumber - 1) * pageSize)

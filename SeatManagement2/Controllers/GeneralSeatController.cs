@@ -2,6 +2,7 @@
 using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
 using SeatManagement2.DTOs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SeatManagement2.Controllers
 {
@@ -39,6 +40,7 @@ namespace SeatManagement2.Controllers
         }
 
         [HttpDelete("{seatId}")]
+        [Authorize(Policy = "AdminOnly")]
         public IActionResult Delete(int seatId)
         {
             try

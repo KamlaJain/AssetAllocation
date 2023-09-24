@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SeatManagement2.DTOs;
 using SeatManagement2.Interfaces;
 
@@ -37,6 +38,7 @@ namespace SeatManagement2.Controllers
         }
 
         [HttpDelete("{employeeId}")]
+        [Authorize(Policy = "AdminOnly")]
         public IActionResult Delete(int employeeId)
         {
             try
