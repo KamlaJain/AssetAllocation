@@ -39,7 +39,7 @@ namespace SeatManagement2.Controllers
             }
         }   
         
-        [HttpDelete]
+        [HttpDelete("{facId}")]
         public IActionResult Delete(int facId)
         {
             try

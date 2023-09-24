@@ -2,12 +2,11 @@
 using SeatManagement2.DTOs;
 using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
-
-
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Services
 {
-    public class FacilityService: IFacilityService
+    public class FacilityService : IFacilityService
     {
         private readonly IRepository<Facility> _repository;
         private readonly IRepository<BuildingLookUp> _buildingrepository;
@@ -19,19 +18,17 @@ namespace SeatManagement2.Services
             _buildingrepository = brepository;
             _cityrepository = crepository;
         }
-        [HttpGet]
         public List<Facility> IndexFacility()
         {
             return _repository.GetAll().ToList();
         }
-        [HttpPost]
         public void AddFacility(FacilityDTO facilityDTO)
         {
             var cityExist = _cityrepository.GetById(facilityDTO.CityId);
             var buildingExist = _buildingrepository.GetById(facilityDTO.BuildingId);
             if (buildingExist == null || cityExist == null)
             {
-                throw new Exception("Could not find building/city");
+                throw new ResourceNotFoundException("Could not find building/city");
             }
             else
             {
@@ -48,13 +45,12 @@ namespace SeatManagement2.Services
             }
         }
 
-        [HttpDelete]
         public void DeleteFacility(int facId)
         {
             var item = _repository.GetById(facId);
             if (item == null)
             {
-                throw new Exception("Coud not find building/city");
+                throw new ResourceNotFoundException("Coud not find building/city");
             }
             else
             {

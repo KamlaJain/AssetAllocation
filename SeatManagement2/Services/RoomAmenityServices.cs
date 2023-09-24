@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SeatManagement2.DTOs;
+using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
 
@@ -33,13 +34,13 @@ namespace SeatManagement2.Services
             var amenity = _amenityRepository.GetById(roomAmenityDTO.AmenityId);
             if (amenity == null)
             {
-                throw new Exception("Amenity not found.");
+                throw new ResourceNotFoundException("Amenity not found.");
             }
 
             var facility = _facilityRepository.GetById(roomAmenityDTO.FacilityId);
             if (facility == null)
             {
-                throw new Exception("Facility not found.");
+                throw new ResourceNotFoundException("Facility not found.");
             }
 
             var item = new RoomAmenity
@@ -56,7 +57,7 @@ namespace SeatManagement2.Services
             var item = _repository.GetById(roomAmenityId);
             if (item == null)
             {
-                throw new Exception("Could not find room amenity");
+                throw new ResourceNotFoundException("Could not find room amenity");
             }
             else
             {

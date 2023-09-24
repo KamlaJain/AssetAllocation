@@ -4,6 +4,7 @@
     using System.Linq;
     using global::SeatManagement2.Interfaces;
     using global::SeatManagement2.Models;
+using SeatManagement2.Exceptions;
 
     namespace SeatManagement2.Services
     {
@@ -36,7 +37,7 @@
                 var item = _repository.GetById(deptId);
                 if (item == null)
                 {
-                    throw new Exception("Could not find department");
+                    throw new ResourceNotFoundException("Department not Found");
                 }
                 else
                 {

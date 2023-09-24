@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SeatManagement2.DTOs;
+using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
 
@@ -44,7 +45,7 @@ namespace SeatManagement2.Services
             var item = _repository.GetById(cabinId);
             if (item == null)
             {
-                throw new Exception("Cabin does not exist");
+                throw new ResourceNotFoundException("Cabin does not exist");
             }
             else
             {
@@ -57,7 +58,7 @@ namespace SeatManagement2.Services
             var reqCabin = _repository.GetAll().FirstOrDefault(c => c.CabinNumber == cabin.CabinNumber && c.FacilityId == cabin.FacilityId);
             if (reqCabin == null)
             {
-                throw new Exception("Cabin not found.");
+                throw new ResourceNotFoundException("Cabin not found.");
             }
             if (reqCabin.EmployeeId.HasValue)
             {
@@ -78,7 +79,7 @@ namespace SeatManagement2.Services
             var emp = _employeerepo.GetAll().FirstOrDefault(e => e.EmployeeId == reqcabin.EmployeeId);
             if (emp == null)
             {
-                throw new Exception("Employee not found.");
+                throw new ResourceNotFoundException("Employee not found.");
             }
             reqcabin.EmployeeId = null;
 
@@ -98,7 +99,7 @@ namespace SeatManagement2.Services
             var emp = _employeerepo.GetById(cabin.EmployeeId);
             if (emp == null)
             {
-                throw new Exception("Employee not found.");
+                throw new ResourceNotFoundException("Employee not found.");
             }
             reqcabin.EmployeeId = cabin.EmployeeId;
 

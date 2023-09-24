@@ -8,7 +8,6 @@ namespace SeatManagement2.Interfaces
     {
         List<CityLookUp> IndexCity();
         void AddCity(CityLookUpDTO cityLookUpDTO);
-        void DeleteCity(CityLookUpDTO cityLookUpDTO);
         void EditCity(string cityCode, CityLookUpDTO updatedCity);
 
     }

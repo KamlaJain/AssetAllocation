@@ -1,5 +1,6 @@
 ﻿using NuGet.Protocol.Core.Types;
 using SeatManagement2.DTOs;
+using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
 
@@ -48,7 +49,7 @@ namespace SeatManagement2.Services
             var reqBuilding = _buildingrepository.GetAll().Where(b => b.BuildingId == filterType.BuildingId);
             if (reqBuilding == null)
             {
-                throw new Exception("No buildings found");
+                throw new ResourceNotFoundException("No buildings found");
             }
             return reqBuilding.ToList();
         }
@@ -58,7 +59,7 @@ namespace SeatManagement2.Services
             var reqFacility = _facilityrepository.GetAll().Where(f => f.FacilityId == filterType.FacilityId);
             if (reqFacility == null)
             {
-                throw new Exception("No facilities found");
+                throw new ResourceNotFoundException("No facilities found");
             }
             return reqFacility.ToList();
         }
@@ -67,7 +68,7 @@ namespace SeatManagement2.Services
             var reqFloor = _facilityrepository.GetAll().Where(f => f.FloorNumber == filterType.FloorNumber);
             if (reqFloor == null)
             {
-                throw new Exception("No facilities in entered floor found");
+                throw new ResourceNotFoundException("No facilities in entered floor found");
             }
             return reqFloor.ToList();
         }
@@ -128,8 +129,6 @@ namespace SeatManagement2.Services
                 }
                 return GetUnallocatedSeatsReport();
             }
-
-
         }
         public IEnumerable<object> GenerateCabinsReport(bool isallocatedreport, int filterChoice, FilterDTO filterType)
         {
@@ -159,9 +158,32 @@ namespace SeatManagement2.Services
                         return GetAllocatedCabinsReport();
                 }
             }
+            else
+            {
+                switch (filterChoice)
+                {
+                    case 1: //filterByBuilding
+                        var reqBuilding = ApplyBuildingFilter(filterType);
+                        var reqBuildingCode = reqBuilding.Select(b => b.BuildingCode);
+                        var unallocatedCabinsInBuilding = GetUnallocatedCabinsReport().Where(a => reqBuildingCode.Contains(a.BuildingCode));
+                        return unallocatedCabinsInBuilding.ToList();
 
-            return GetUnallocatedCabinsReport();
+                    case 2: //filterbyFacility
+                        var reqFacility = ApplyFacilityFilter(filterType);
+                        var reqFacilityName = reqFacility.Select(f => f.FacilityName);
+                        var unallocatedCabinsInFacility = GetUnallocatedCabinsReport().Where(a => reqFacilityName.Contains(a.FacilityName));
+                        return unallocatedCabinsInFacility.ToList();
 
+                    case 3: //filterByFloor
+                        var reqFloor = ApplyFloorFilter(filterType);
+                        var reqFloorNumber = reqFloor.Select(f => f.FloorNumber);
+                        var unallocatedCabinsInFloor = GetUnallocatedCabinsReport().Where(f => reqFloorNumber.Contains(f.FloorNumber));
+                        return unallocatedCabinsInFloor.ToList();
+
+                    default:
+                        return GetUnallocatedCabinsReport();
+                }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SeatManagement2.DTOs;
+using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
 
@@ -29,25 +30,13 @@ namespace SeatManagement2.Services
             _repository.Add(item);
             _repository.Save();
         }
-        public void DeleteCity(CityLookUpDTO cityLookUpDTO)
-        {
-            var item = _repository.GetAll().FirstOrDefault(c => c.CityCode == cityLookUpDTO.CityCode);
-            if (item == null)
-            {
-                throw new Exception("Invalid City");
-            }
-            else
-            {
-                _repository.Delete(item);
-                _repository.Save();
-            }
-        }
+
         public void EditCity(string cityCode, CityLookUpDTO updatedCity)
         {
             var item = _repository.GetAll().FirstOrDefault(c => c.CityCode == cityCode);
             if (item == null)
             {
-                throw new Exception("Invalid City");
+                throw new ResourceNotFoundException("Invalid City");
             }
             else
             {

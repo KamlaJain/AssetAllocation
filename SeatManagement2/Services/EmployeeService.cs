@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SeatManagement2.DTOs;
+using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
 
@@ -38,7 +39,7 @@ namespace SeatManagement2.Services
             var item = _repository.GetById(employeeId);
             if (item == null)
             {
-                throw new Exception("Could not find employee");
+                throw new ResourceNotFoundException("Could not find employee");
             }
             else
             {

@@ -1,7 +1,6 @@
 ﻿using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
-
-
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Services
 {
@@ -36,7 +35,7 @@ namespace SeatManagement2.Services
             var item = _repository.GetById(amenityId);
             if (item == null)
             {
-                throw new Exception("Could not find amenity");
+                throw new ResourceNotFoundException("Amenity not Found");
             }
             else
             {

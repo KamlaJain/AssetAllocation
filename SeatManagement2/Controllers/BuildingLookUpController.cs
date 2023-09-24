@@ -2,6 +2,7 @@
 using SeatManagement2.DTOs;
 using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Controllers
 {
@@ -36,19 +37,7 @@ namespace SeatManagement2.Controllers
             }
         }
 
-        [HttpDelete]
-        public IActionResult DeleteBuilding(BuildingLookUpDTO buildingLookUpDTO)
-        {
-            try
-            {
-                _building.DeleteBuilding(buildingLookUpDTO);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+       
         [HttpPatch]
         public IActionResult EditBuilding(string buildingcode, BuildingLookUpDTO updatedBuilding)
         {
@@ -57,10 +46,14 @@ namespace SeatManagement2.Controllers
                 _building.EditBuilding(buildingcode, updatedBuilding);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
                 return BadRequest(ex.Message);
             }
+           /* catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }*/
         }
 
     }

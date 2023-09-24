@@ -2,6 +2,7 @@
 using SeatManagement2.DTOs;
 using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Services
 {
@@ -31,25 +32,13 @@ namespace SeatManagement2.Services
             _repository.Save();
         }
 
-        public void DeleteBuilding(BuildingLookUpDTO buildingLookUpDTO)
-        {
-            var item = _repository.GetAll().FirstOrDefault(c => c.BuildingCode == buildingLookUpDTO.BuildingCode);
-            if (item == null)
-            {
-                throw new Exception("Invalid Building");
-            }
-            else
-            {
-                _repository.Delete(item);
-                _repository.Save();
-            }
-        }
+       
         public void EditBuilding(string buildingcode, BuildingLookUpDTO updatedBuilding)
         {
             var item = _repository.GetAll().FirstOrDefault(c => c.BuildingCode == buildingcode);
             if (item == null)
             {
-                throw new Exception("Invalid Building");
+                throw new ResourceNotFoundException("Invalid Building");
             }
             else
             {

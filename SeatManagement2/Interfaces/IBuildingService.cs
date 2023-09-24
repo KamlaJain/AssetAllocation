@@ -7,7 +7,6 @@ namespace SeatManagement2.Interfaces
     {
         List<BuildingLookUp> IndexBuilding();
         void AddBuilding(BuildingLookUpDTO buildingLookUpDTO);
-        void DeleteBuilding(BuildingLookUpDTO buildingLookUpDTO);
         void EditBuilding(string buildingCode, BuildingLookUpDTO updatedBuilding);
     }
 

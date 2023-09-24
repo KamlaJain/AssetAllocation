@@ -36,7 +36,7 @@ namespace SeatManagement2.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{meetingRoomId}")]
         public IActionResult Delete(int meetingRoomId)
         {
             try

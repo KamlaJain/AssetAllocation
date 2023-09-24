@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SeatManagement2.DTOs;
+using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
 
@@ -44,7 +45,7 @@ namespace SeatManagement2.Services
             var item = _repository.GetById(seatId);
             if (item == null)
             {
-                throw new Exception("Could not find general seat");
+                throw new ResourceNotFoundException("Could not find general seat");
             }
             else
             {
@@ -61,7 +62,7 @@ namespace SeatManagement2.Services
             var reqseat = _repository.GetAll().FirstOrDefault(s => s.SeatNumber == seat.SeatNumber && s.FacilityId == seat.FacilityId);
             if (reqseat == null)
             {
-                throw new Exception("Seat not found.");
+                throw new ResourceNotFoundException("Seat not found.");
             }
 
             //to deallocate employee if given value contains an employeeId
@@ -80,7 +81,7 @@ namespace SeatManagement2.Services
             var emp = _employeerepo.GetAll().FirstOrDefault(e => e.EmployeeId == reqseat.EmployeeId);
             if (emp == null)
             {
-                throw new Exception("Employee not found.");
+                throw new ResourceNotFoundException("Employee not found.");
             }
 
             int empId = reqseat.EmployeeId.Value;
@@ -100,7 +101,7 @@ namespace SeatManagement2.Services
             var emp = _employeerepo.GetById(seat.EmployeeId);
             if (emp == null)
             {
-                throw new Exception("Employee not found.");
+                throw new ResourceNotFoundException("Employee not found.");
             }
 
             emp.IsAllocated = true;

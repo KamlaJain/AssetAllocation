@@ -43,21 +43,6 @@ namespace SeatManagement2.Controllers
             }
         }
 
-
-        [HttpDelete]
-        public IActionResult Delete(CityLookUpDTO cityLookUpDTO)
-        {
-            try
-            {
-                _city.DeleteCity(cityLookUpDTO);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-
-        }
         [HttpPatch]
         public IActionResult Edit(string buildingcode, CityLookUpDTO updatedCity)
         {
