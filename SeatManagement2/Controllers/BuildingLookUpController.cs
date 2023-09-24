@@ -18,9 +18,9 @@ namespace SeatManagement2.Controllers
         }
 
         [HttpGet]
-        public IActionResult IndexBuilding()
+        public IActionResult IndexBuilding([FromQuery]int pageNumber, [FromQuery] int pageSize)
         {
-            return Ok(_building.IndexBuilding());
+            return Ok(_building.IndexBuilding(pageNumber,pageSize));
         }
 
         [HttpPost]

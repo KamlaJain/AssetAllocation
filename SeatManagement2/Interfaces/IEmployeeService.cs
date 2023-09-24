@@ -5,7 +5,7 @@ namespace SeatManagement2.Interfaces
 {
     public interface IEmployeeService
     {
-        List<Employee> GetAllEmployees();
+        List<Employee> GetAllEmployees(int pageNumber, int pageSize);
         void AddEmployee(EmployeeDTO employeeDTO);
         void DeleteEmployee(int employeeId);
     }

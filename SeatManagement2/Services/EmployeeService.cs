@@ -11,16 +11,23 @@ namespace SeatManagement2.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IRepository<Employee> _repository;
-        
+       
         public EmployeeService(IRepository<Employee> repository)
         {
             _repository = repository;
-            
+           
         }
 
-        public List<Employee> GetAllEmployees()
+        public List<Employee> GetAllEmployees(int pageNumber, int pageSize)
         {
-            return _repository.GetAll().ToList();
+            //int _pageNumber = 1;
+            //int _pageSize = 2;
+            var paginatedEmployeeList= _repository
+                .GetAll()
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+            return paginatedEmployeeList;
         }
 
         public void AddEmployee(EmployeeDTO employeeDTO)
