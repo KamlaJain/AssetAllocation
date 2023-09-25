@@ -5,7 +5,7 @@ namespace SeatManagement2.Interfaces
 {
     public interface IBuildingService
     {
-        List<BuildingLookUp> IndexBuilding(int pageNumber, int pageSize);
+        List<BuildingLookUp> GetAllBuildings();
         void AddBuilding(BuildingLookUpDTO buildingLookUpDTO);
         void EditBuilding(string buildingCode, BuildingLookUpDTO updatedBuilding);
     }

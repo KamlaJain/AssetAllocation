@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
+using SeatManagement2.Exceptions;
+using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
 using System.Security.Claims;
 
@@ -10,30 +12,24 @@ namespace SeatManagement2.Controllers
     public class UserAuthController : Controller
     {
         private readonly IConfiguration configuration;
-        public UserAuthController(IConfiguration configuration)
+        private readonly IUserAuth userAuth;
+
+        public UserAuthController(IConfiguration configuration, IUserAuth userAuth)
         {
             this.configuration = configuration;
+            this.userAuth = userAuth;
         }
 
         [HttpPost]
-        public async Task<IActionResult> Authenticate([FromBody]UserCredentials credentials)
+        public async Task<IActionResult> Authenticate([FromBody] UserCredentials credentials)
         {
-            if(credentials.Username=="admin" && credentials.Password == "admin")
+            try
             {
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Role, "Admin")
-                };
-
-                var identity = new ClaimsIdentity(claims, "MyCookieAuth");
-                var claimsPrincipal= new ClaimsPrincipal(identity);
-
+                var claimsPrincipal = userAuth.AuthenticateUser(credentials);
                 await HttpContext.SignInAsync("MyCookieAuth", claimsPrincipal);
-
                 return Ok();
-
             }
-            else
+            catch (UnauthorizedUserException)
             {
                 await HttpContext.SignOutAsync("MyCookieAuth");
                 return Unauthorized();

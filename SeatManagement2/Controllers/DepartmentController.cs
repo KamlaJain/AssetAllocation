@@ -3,6 +3,7 @@ using SeatManagement2.DTOs;
 using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
 using Microsoft.AspNetCore.Authorization;
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Controllers
 {
@@ -19,7 +20,7 @@ namespace SeatManagement2.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult GetAll()
         {
             return Ok(_departmentService.GetAllDepartments());
         }
@@ -32,9 +33,9 @@ namespace SeatManagement2.Controllers
                 _departmentService.AddDepartment(departmentName);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -47,9 +48,9 @@ namespace SeatManagement2.Controllers
                 _departmentService.DeleteDepartment(deptId);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
     }

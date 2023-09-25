@@ -3,8 +3,7 @@ using SeatManagement2;
 using SeatManagement2.Models;
 using SeatManagement2.Services;
 using SeatManagement2.Interfaces;
-
-
+using SeatManagement2.Exceptions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,6 +53,8 @@ builder.Services.AddSingleton<IMeetingRoomService, MeetingRoomService>();
 builder.Services.AddSingleton<IRoomAmenityService, RoomAmenityService>();
 builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
 builder.Services.AddSingleton<IReportService, ReportService>();
+builder.Services.AddScoped<IUserAuth, UserAuthService>();
+
 
 
 builder.Services.AddControllers();
@@ -72,9 +73,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.Run();

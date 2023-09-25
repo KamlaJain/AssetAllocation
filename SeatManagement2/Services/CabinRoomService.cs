@@ -33,9 +33,6 @@ namespace SeatManagement2.Services
                 CabinNumber = cabinRoomDTO.CabinNumber,
                 FacilityId = cabinRoomDTO.FacilityId,
             };
-            Console.WriteLine("test");
-            Console.WriteLine(item);
-
             _repository.Add(item);
             _repository.Save();
         }
@@ -60,29 +57,39 @@ namespace SeatManagement2.Services
             {
                 throw new ResourceNotFoundException("Cabin not found.");
             }
-            if (reqCabin.EmployeeId.HasValue)
+            if (cabin.Action == "Deallocate")
             {
-                DeallocateEmployeeFromCabin(reqCabin);
+                DeallocateEmployeeFromCabin(reqCabin, cabin);
             }
-            else
+            else if (cabin.Action == "Allocate")
             {
                 AllocateEmployeeToCabin(reqCabin, cabin);
             }
+            else
+            {
+                throw new BadRequestException("Invalid Input");
+            }
         }
 
-        public void DeallocateEmployeeFromCabin(CabinRoom reqcabin)
+        public void DeallocateEmployeeFromCabin(CabinRoom reqcabin, CabinRoomDTO cabin)
+
         {
             if (reqcabin.EmployeeId == null)
             {
-                throw new Exception("Cabin is not allocated to any employee.");
+                throw new BadRequestException("Cabin is not allocated to any employee.");
             }
-            var emp = _employeerepo.GetAll().FirstOrDefault(e => e.EmployeeId == reqcabin.EmployeeId);
+
+            var emp = _employeerepo.GetAll().FirstOrDefault(e => e.EmployeeId == cabin.EmployeeId);
             if (emp == null)
             {
                 throw new ResourceNotFoundException("Employee not found.");
             }
             reqcabin.EmployeeId = null;
 
+            if(emp.IsAllocated==false) 
+            {
+                throw new BadRequestException("Employee is not allocated"); 
+            }
             emp.IsAllocated = false;
             _employeerepo.Update(emp);
 
@@ -92,14 +99,19 @@ namespace SeatManagement2.Services
 
         public void AllocateEmployeeToCabin(CabinRoom reqcabin, CabinRoomDTO cabin)
         {
+
             if (reqcabin.EmployeeId != null)
             {
-                throw new Exception("Cabin is already allocated.");
+                throw new BadRequestException("Cabin is already allocated");
             }
             var emp = _employeerepo.GetById(cabin.EmployeeId);
             if (emp == null)
             {
                 throw new ResourceNotFoundException("Employee not found.");
+            }
+            if (emp.IsAllocated == true)
+            {
+                throw new BadRequestException("Employee is already allocated");
             }
             reqcabin.EmployeeId = cabin.EmployeeId;
 

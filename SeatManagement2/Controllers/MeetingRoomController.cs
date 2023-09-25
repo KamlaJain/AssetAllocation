@@ -3,6 +3,7 @@ using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
 using SeatManagement2.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Controllers
 {
@@ -31,9 +32,9 @@ namespace SeatManagement2.Controllers
                 _meetingRoomService.AddMeetingRoom(meetingRoomDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -46,9 +47,9 @@ namespace SeatManagement2.Controllers
                 _meetingRoomService.DeleteMeetingRoom(meetingRoomId);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 

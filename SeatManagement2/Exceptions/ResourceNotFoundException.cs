@@ -10,9 +10,5 @@
         {
 
         }
-        public ResourceNotFoundException(string message, Exception inner): base(message, inner)
-        {
-
-        }
     }
 }

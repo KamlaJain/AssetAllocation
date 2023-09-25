@@ -18,9 +18,9 @@ namespace SeatManagement2.Controllers
         }
 
         [HttpGet]
-        public IActionResult IndexBuilding([FromQuery]int pageNumber, [FromQuery] int pageSize)
+        public IActionResult GetAll()
         {
-            return Ok(_building.IndexBuilding(pageNumber,pageSize));
+            return Ok(_building.GetAllBuildings);
         }
 
         [HttpPost]
@@ -31,9 +31,9 @@ namespace SeatManagement2.Controllers
                 _building.AddBuilding(buildingLookUpDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -48,12 +48,12 @@ namespace SeatManagement2.Controllers
             }
             catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
-           /* catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }*/
+            /* catch (Exception ex)
+             {
+                 return BadRequest(ex.Message);
+             }*/
         }
 
     }

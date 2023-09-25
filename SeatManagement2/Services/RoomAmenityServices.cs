@@ -71,13 +71,13 @@ namespace SeatManagement2.Services
             var reqRoomAmenity = _repository.GetAll().FirstOrDefault(ra => ra.FacilityId == roomAmenity.FacilityId && ra.AmenityId == roomAmenity.AmenityId);
             if (reqRoomAmenity == null)
             {
-                throw new Exception("No such Amenity in Facility");
+                throw new ResourceNotFoundException("No such Amenity in Facility");
             }
 
             var meetingRoom = _meetingRoomRepository.GetAll().Where(ra => ra.MeetingRoomId == roomAmenity.MeetingRoomId && ra.FacilityId == reqRoomAmenity.FacilityId);
             if (meetingRoom == null)
             {
-                throw new Exception("Meeting Room does not exist in Facility");
+                throw new ResourceNotFoundException("Meeting Room does not exist in Facility");
             }
 
             if (reqRoomAmenity.MeetingRoomId.HasValue)

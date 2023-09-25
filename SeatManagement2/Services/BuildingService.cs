@@ -15,14 +15,12 @@ namespace SeatManagement2.Services
             _repository = repository;
         }
 
-        public List<BuildingLookUp> IndexBuilding(int pageNumber, int pageSize)
+        public List<BuildingLookUp> GetAllBuildings()
         {
-            var paginatedData = _repository
+            var buildingList = _repository
                 .GetAll()
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize)
                 .ToList();
-            return paginatedData;
+            return buildingList;
         }
 
         public void AddBuilding(BuildingLookUpDTO buildingLookUpDTO)

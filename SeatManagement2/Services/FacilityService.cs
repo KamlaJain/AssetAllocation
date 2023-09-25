@@ -38,7 +38,6 @@ namespace SeatManagement2.Services
                     FloorNumber = facilityDTO.FloorNumber,
                     BuildingId = facilityDTO.BuildingId,
                     CityId = facilityDTO.CityId,
-
                 };
                 _repository.Add(item);
                 _repository.Save();

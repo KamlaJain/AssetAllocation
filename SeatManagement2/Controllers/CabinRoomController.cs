@@ -4,6 +4,7 @@ using SeatManagement2.Interfaces;
 using SeatManagement2.DTOs;
 using SeatManagement2.Services;
 using Microsoft.AspNetCore.Authorization;
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Controllers
 {
@@ -21,7 +22,7 @@ namespace SeatManagement2.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult GetAll()
         {
             return Ok(_cabinRoomService.GetAllCabinRooms());
         }
@@ -34,9 +35,9 @@ namespace SeatManagement2.Controllers
                 _cabinRoomService.AddCabinRoom(cabinRoomDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -49,9 +50,9 @@ namespace SeatManagement2.Controllers
                 _cabinRoomService.DeleteCabinRoom(cabinId);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         [HttpPatch]
@@ -62,7 +63,11 @@ namespace SeatManagement2.Controllers
                 _cabinRoomService.UpdateEmployeeCabinAllocationStatus(seat);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (BadRequestException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -78,9 +83,9 @@ namespace SeatManagement2.Controllers
                 return Ok(_reportService.GenerateCabinsReport(isallocatedreport, filterChoice, filterType));
 
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest($"{ex.Message}");
+                return NotFound(ex.Message);
             }
         }
     }

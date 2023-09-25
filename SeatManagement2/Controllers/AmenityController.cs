@@ -4,6 +4,7 @@ using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Services;
 using Microsoft.AspNetCore.Authorization;
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Controllers
 {
@@ -19,7 +20,7 @@ namespace SeatManagement2.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult GetAll()
         {
             return Ok(_amenityService.GetAllAmenities());
         }
@@ -32,9 +33,9 @@ namespace SeatManagement2.Controllers
                 _amenityService.AddAmenity(amenityName);
                 return Ok();
             }
-            catch(Exception ex)
+            catch(ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         [HttpDelete("{amenityId}")]
@@ -46,9 +47,9 @@ namespace SeatManagement2.Controllers
                 _amenityService.DeleteAmenity(amenityId);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
     }

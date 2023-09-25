@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SeatManagement2;
 using SeatManagement2.DTOs;
+using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
 using SeatManagement2.Services;
@@ -24,7 +25,7 @@ namespace SeatManagement2.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public IActionResult GetAll()
         {
             return Ok(_city.IndexCity());
         }
@@ -37,9 +38,9 @@ namespace SeatManagement2.Controllers
                 _city.AddCity(cityLookUpDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -51,9 +52,9 @@ namespace SeatManagement2.Controllers
                 _city.EditCity(buildingcode, updatedCity);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
     }

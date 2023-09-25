@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SeatManagement2.DTOs;
+using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 
 
@@ -31,9 +32,9 @@ namespace SeatManagement2.Controllers
                 _employeeService.AddEmployee(employeeDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -46,9 +47,9 @@ namespace SeatManagement2.Controllers
                 _employeeService.DeleteEmployee(employeeId);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
     }

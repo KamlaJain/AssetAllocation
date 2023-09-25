@@ -4,6 +4,7 @@ using SeatManagement2.Interfaces;
 using SeatManagement2.DTOs;
 using NuGet.DependencyResolver;
 using Microsoft.AspNetCore.Authorization;
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Controllers
 {
@@ -32,9 +33,9 @@ namespace SeatManagement2.Controllers
                 _roomAmenityService.AddRoomAmenity(roomAmenityDTO);
                 return Ok();
             }
-            catch
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest();
+                return NotFound(ex.Message);
             }
         }
 
@@ -47,9 +48,9 @@ namespace SeatManagement2.Controllers
                 _roomAmenityService.DeleteRoomAmenity(roomAmenityId);
                 return Ok();
             }
-            catch
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest();
+                return NotFound(ex.Message);
             }
         }
 
@@ -61,9 +62,9 @@ namespace SeatManagement2.Controllers
                 _roomAmenityService.UpdateAmenitiesInRoom(roomAmenityDTO);
                 return Ok();
             }
-            catch
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest();
+                return NotFound(ex.Message);
             }
         }
        

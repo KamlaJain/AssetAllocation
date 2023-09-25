@@ -3,6 +3,7 @@ using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
 using SeatManagement2.DTOs;
 using Microsoft.AspNetCore.Authorization;
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Controllers
 {
@@ -33,9 +34,9 @@ namespace SeatManagement2.Controllers
                 _generalSeatService.AddGeneralSeat(generalSeatDTO);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -48,9 +49,9 @@ namespace SeatManagement2.Controllers
                 _generalSeatService.DeleteGeneralSeat(seatId);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         [HttpPatch]
@@ -61,10 +62,13 @@ namespace SeatManagement2.Controllers
                 _generalSeatService.UpdateEmployeeSeatAllocationStatus(seat);
                 return Ok();
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                Console.WriteLine(ex.Message);
-                return BadRequest();
+                return NotFound(ex.Message);
+            }
+            catch (BadRequestException  ex)
+            {
+                return BadRequest(ex.Message);
             }
         }
 
@@ -78,9 +82,9 @@ namespace SeatManagement2.Controllers
                 return Ok(_reportService.GenerateSeatsReport(isallocatedreport, filterChoice, filterType));
                
             }
-            catch (Exception ex)
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest($"{ex.Message}");
+                return NotFound(ex.Message);
             }
         }
     }

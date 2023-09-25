@@ -5,6 +5,7 @@ using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Services;
 using Microsoft.AspNetCore.Authorization;
+using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Controllers
 {
@@ -34,9 +35,9 @@ namespace SeatManagement2.Controllers
                 _facility.AddFacility(facilityDTO);
                 return Ok();
             }
-            catch
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest();
+                return NotFound(ex.Message);
             }
         }   
         
@@ -49,9 +50,9 @@ namespace SeatManagement2.Controllers
                 _facility.DeleteFacility(facId);
                 return Ok();
             }
-            catch
+            catch (ResourceNotFoundException ex)
             {
-                return BadRequest();
+                return NotFound(ex.Message);
             }
         }
 
@@ -69,8 +70,6 @@ namespace SeatManagement2.Controllers
                 return BadRequest();
             }
         }*/
-        
     }
-
 }
 

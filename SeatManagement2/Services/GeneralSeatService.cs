@@ -29,7 +29,7 @@ namespace SeatManagement2.Services
         {
             if (_repository.GetAll().Any(s => s.SeatNumber == generalSeatDTO.SeatNumber && s.FacilityId == generalSeatDTO.FacilityId))
             {
-                throw new Exception("Seat with the same SeatNumber and FacilityId already exists.");
+                throw new BadRequestException("Seat with the same SeatNumber and FacilityId already exists.");
             }
             var item = new GeneralSeat
             {
@@ -58,38 +58,36 @@ namespace SeatManagement2.Services
 
         public void UpdateEmployeeSeatAllocationStatus(GeneralSeatDTO seat)
         {
-            // check if such a row with given facilityId and seatnumber exists in db
-            var reqseat = _repository.GetAll().FirstOrDefault(s => s.SeatNumber == seat.SeatNumber && s.FacilityId == seat.FacilityId);
-            if (reqseat == null)
-            {
-                throw new ResourceNotFoundException("Seat not found.");
-            }
+            var reqseat = _repository.GetAll().FirstOrDefault(s => s.SeatNumber == seat.SeatNumber && s.FacilityId == seat.FacilityId) ?? throw new ResourceNotFoundException("Seat not found.");
 
-            //to deallocate employee if given value contains an employeeId
-            if (reqseat.EmployeeId.HasValue)
+            if (seat.Action == "Deallocate")
             {
-                DeallocateEmployee(reqseat);
+                DeallocateEmployee(reqseat, seat);
             }
-            else
+            else if (seat.Action == "Allocate")
             {
                 AllocateEmployee(reqseat, seat);
             }
+            else { throw new BadRequestException("Invalid input"); }
         }
-        public void DeallocateEmployee(GeneralSeat reqseat)
+        public void DeallocateEmployee(GeneralSeat reqseat, GeneralSeatDTO seat)
         {
 
-            var emp = _employeerepo.GetAll().FirstOrDefault(e => e.EmployeeId == reqseat.EmployeeId);
+            var emp = _employeerepo.GetAll().FirstOrDefault(e => e.EmployeeId == seat.EmployeeId);
             if (emp == null)
             {
                 throw new ResourceNotFoundException("Employee not found.");
             }
-
+            if (!reqseat.EmployeeId.HasValue)
+            {
+                throw new BadRequestException("No employee in seat to deallocate");
+            }
             int empId = reqseat.EmployeeId.Value;
-            var employee = _employeerepo.GetById(empId); //find and make isAllocated false in employeetable for employeeId given
+            var employee = _employeerepo.GetById(empId);
             employee.IsAllocated = false;
             _employeerepo.Update(employee);
 
-            reqseat.EmployeeId = null; //set empId of seatsrepo to null
+            reqseat.EmployeeId = null;
             _repository.Update(reqseat);
             _repository.Save();
 
@@ -97,11 +95,16 @@ namespace SeatManagement2.Services
 
         public void AllocateEmployee(GeneralSeat reqseat, GeneralSeatDTO seat)
         {
-            //Check if employee exists in employeetable
+            if (reqseat.EmployeeId.HasValue) throw new BadRequestException("Already allocated seat");
+
             var emp = _employeerepo.GetById(seat.EmployeeId);
             if (emp == null)
             {
                 throw new ResourceNotFoundException("Employee not found.");
+            }
+            if (emp.IsAllocated == true)
+            {
+                throw new BadRequestException("Employee already allocated");
             }
 
             emp.IsAllocated = true;
@@ -112,7 +115,7 @@ namespace SeatManagement2.Services
             _repository.Save();
         }
 
-       
-       
-}
+
+
+    }
 }
