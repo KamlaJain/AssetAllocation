@@ -12,8 +12,8 @@ using SeatManagement2;
 namespace SeatManagement2.Migrations
 {
     [DbContext(typeof(SeatManagementContext))]
-    [Migration("20230904061821_Third")]
-    partial class Third
+    [Migration("20230925122222_AddViews")]
+    partial class AddViews
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,7 +24,61 @@ namespace SeatManagement2.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
-            modelBuilder.Entity("SeatManagement2.Models.AmenityLookUp", b =>
+            modelBuilder.Entity("SeatManagement2.Models.AllocatedCabinsView", b =>
+                {
+                    b.Property<string>("FacilityName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CabinNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BuildingCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CityCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FloorNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("FacilityName", "CabinNumber", "EmployeeId");
+
+                    b.ToView("AllocatedCabinsView");
+                });
+
+            modelBuilder.Entity("SeatManagement2.Models.AllocatedSeatsView", b =>
+                {
+                    b.Property<string>("FacilityName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("SeatNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("EmployeeId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BuildingCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CityCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FloorNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("FacilityName", "SeatNumber", "EmployeeId");
+
+                    b.ToView("AllocatedSeats");
+                });
+
+            modelBuilder.Entity("SeatManagement2.Models.AmenityType", b =>
                 {
                     b.Property<int>("AmenityId")
                         .ValueGeneratedOnAdd()
@@ -37,7 +91,7 @@ namespace SeatManagement2.Migrations
 
                     b.HasKey("AmenityId");
 
-                    b.ToTable("AmenityLookUp");
+                    b.ToTable("AmenityTypes");
                 });
 
             modelBuilder.Entity("SeatManagement2.Models.BuildingLookUp", b =>
@@ -242,6 +296,9 @@ namespace SeatManagement2.Migrations
                     b.Property<int>("AmenityId")
                         .HasColumnType("int");
 
+                    b.Property<int>("AmenityTypeAmenityId")
+                        .HasColumnType("int");
+
                     b.Property<int>("FacilityId")
                         .HasColumnType("int");
 
@@ -250,13 +307,61 @@ namespace SeatManagement2.Migrations
 
                     b.HasKey("RoomAmenityId");
 
-                    b.HasIndex("AmenityId");
+                    b.HasIndex("AmenityTypeAmenityId");
 
                     b.HasIndex("FacilityId");
 
                     b.HasIndex("MeetingRoomId");
 
                     b.ToTable("RoomAmenities");
+                });
+
+            modelBuilder.Entity("SeatManagement2.Models.UnallocatedCabinsView", b =>
+                {
+                    b.Property<string>("FacilityName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("CabinNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BuildingCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CityCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FloorNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("FacilityName", "CabinNumber");
+
+                    b.ToView("UnallocatedCabinsView");
+                });
+
+            modelBuilder.Entity("SeatManagement2.Models.UnallocatedSeatsView", b =>
+                {
+                    b.Property<string>("FacilityName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("SeatNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("BuildingCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CityCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("FloorNumber")
+                        .HasColumnType("int");
+
+                    b.HasKey("FacilityName", "SeatNumber");
+
+                    b.ToView("UnallocatedSeats");
                 });
 
             modelBuilder.Entity("SeatManagement2.Models.CabinRoom", b =>
@@ -336,9 +441,9 @@ namespace SeatManagement2.Migrations
 
             modelBuilder.Entity("SeatManagement2.Models.RoomAmenity", b =>
                 {
-                    b.HasOne("SeatManagement2.Models.AmenityLookUp", "AmenityLookUp")
+                    b.HasOne("SeatManagement2.Models.AmenityType", "AmenityType")
                         .WithMany()
-                        .HasForeignKey("AmenityId")
+                        .HasForeignKey("AmenityTypeAmenityId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -352,7 +457,7 @@ namespace SeatManagement2.Migrations
                         .WithMany()
                         .HasForeignKey("MeetingRoomId");
 
-                    b.Navigation("AmenityLookUp");
+                    b.Navigation("AmenityType");
 
                     b.Navigation("Facility");
 

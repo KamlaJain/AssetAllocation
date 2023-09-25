@@ -38,6 +38,10 @@ namespace SeatManagement2.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpDelete("{seatId}")]
@@ -55,18 +59,18 @@ namespace SeatManagement2.Controllers
             }
         }
         [HttpPatch]
-        public IActionResult Update(GeneralSeatDTO seat)
+        public IActionResult Update([FromQuery] string action, GeneralSeatDTO seat)
         {
             try
             {
-                _generalSeatService.UpdateEmployeeSeatAllocationStatus(seat);
+                _generalSeatService.UpdateEmployeeSeatAllocationStatus(action, seat);
                 return Ok();
             }
             catch (ResourceNotFoundException ex)
             {
                 return NotFound(ex.Message);
             }
-            catch (BadRequestException  ex)
+            catch (BadRequestException ex)
             {
                 return BadRequest(ex.Message);
             }
@@ -74,13 +78,13 @@ namespace SeatManagement2.Controllers
 
         [HttpGet]
         [Route("Reports")]
-        public IActionResult GetFreeSeats([FromQuery]bool isallocatedreport, [FromQuery]int filterChoice, [FromQuery]FilterDTO filterType)
+        public IActionResult GetFreeSeats([FromQuery] bool isallocatedreport, [FromQuery] int filterChoice, [FromQuery] FilterDTO filterType)
         {
             try
             {
                 //api/generalseat/reports/?isallocatedreport=true
                 return Ok(_reportService.GenerateSeatsReport(isallocatedreport, filterChoice, filterType));
-               
+
             }
             catch (ResourceNotFoundException ex)
             {

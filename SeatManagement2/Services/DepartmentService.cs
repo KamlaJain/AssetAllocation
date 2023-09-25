@@ -4,6 +4,7 @@
     using System.Linq;
     using global::SeatManagement2.Interfaces;
     using global::SeatManagement2.Models;
+using SeatManagement2.DTOs;
 using SeatManagement2.Exceptions;
 
     namespace SeatManagement2.Services
@@ -24,7 +25,12 @@ using SeatManagement2.Exceptions;
 
             public void AddDepartment(string departmentName)
             {
-                var item = new DepartmentLookUp
+            var reqDept = _repository.GetAll().FirstOrDefault(c => c.DepartmentName == departmentName);
+            if (reqDept != null)
+            {
+                throw new BadRequestException("City already exists");
+            }
+            var item = new DepartmentLookUp
                 {
                     DepartmentName = departmentName
                 };

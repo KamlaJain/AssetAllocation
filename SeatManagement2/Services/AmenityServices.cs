@@ -8,15 +8,15 @@ using SeatManagement2.Models;
 
 namespace SeatManagement2.Services
 {
-    public class RoomAmenityService : IRoomAmenityService
+    public class AmenityService : IAmenityService
     {
         private readonly IRepository<RoomAmenity> _repository;
         private readonly IRepository<Facility> _facilityRepository;
-        private readonly IRepository<AmenityLookUp> _amenityRepository;
+        private readonly IRepository<AmenityType> _amenityRepository;
         private readonly IRepository<MeetingRoom> _meetingRoomRepository;
 
 
-        public RoomAmenityService(IRepository<RoomAmenity> repository, IRepository<Facility> facilityRepository, IRepository<AmenityLookUp> amenityRepository, IRepository<MeetingRoom> meetingRoomRepository)
+        public AmenityService(IRepository<RoomAmenity> repository, IRepository<Facility> facilityRepository, IRepository<AmenityType> amenityRepository, IRepository<MeetingRoom> meetingRoomRepository)
         {
             _repository = repository;
             _facilityRepository = facilityRepository;
@@ -24,12 +24,12 @@ namespace SeatManagement2.Services
             _meetingRoomRepository = meetingRoomRepository;
         }
 
-        public List<RoomAmenity> GetAllRoomAmenities()
+        public List<RoomAmenity> GetAllAmenities()
         {
             return _repository.GetAll().ToList();
         }
 
-        public void AddRoomAmenity(RoomAmenityDTO roomAmenityDTO)
+        public void AddAmenityToFacility(RoomAmenityDTO roomAmenityDTO)
         {
             var amenity = _amenityRepository.GetById(roomAmenityDTO.AmenityId);
             if (amenity == null)
@@ -52,7 +52,7 @@ namespace SeatManagement2.Services
             _repository.Save();
         }
 
-        public void DeleteRoomAmenity(int roomAmenityId)
+        public void DeleteAmenity(int roomAmenityId)
         {
             var item = _repository.GetById(roomAmenityId);
             if (item == null)

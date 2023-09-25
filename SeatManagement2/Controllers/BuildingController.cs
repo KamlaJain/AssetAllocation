@@ -8,11 +8,11 @@ namespace SeatManagement2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class BuildingLookUpController : Controller
+    public class BuildingController : Controller
     {
         private readonly IBuildingService _building;
 
-        public BuildingLookUpController(IBuildingService ibuilding)
+        public BuildingController(IBuildingService ibuilding)
         {
             _building = ibuilding;
         }
@@ -20,7 +20,7 @@ namespace SeatManagement2.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            return Ok(_building.GetAllBuildings);
+            return Ok(_building.GetAllBuildings());
         }
 
         [HttpPost]
@@ -31,9 +31,9 @@ namespace SeatManagement2.Controllers
                 _building.AddBuilding(buildingLookUpDTO);
                 return Ok();
             }
-            catch (ResourceNotFoundException ex)
+            catch (BadRequestException ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

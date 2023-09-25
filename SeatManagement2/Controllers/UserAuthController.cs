@@ -11,12 +11,10 @@ namespace SeatManagement2.Controllers
     [ApiController]
     public class UserAuthController : Controller
     {
-        private readonly IConfiguration configuration;
         private readonly IUserAuth userAuth;
 
-        public UserAuthController(IConfiguration configuration, IUserAuth userAuth)
+        public UserAuthController(IUserAuth userAuth)
         {
-            this.configuration = configuration;
             this.userAuth = userAuth;
         }
 

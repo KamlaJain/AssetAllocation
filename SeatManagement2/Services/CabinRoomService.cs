@@ -28,6 +28,16 @@ namespace SeatManagement2.Services
 
         public void AddCabinRoom(CabinRoomDTO cabinRoomDTO)
         {
+            var reqFacility = _frepository.GetAll().Any(f => f.FacilityId == cabinRoomDTO.FacilityId);
+            if (!reqFacility)
+            {
+                throw new ResourceNotFoundException("Facility does not exist");
+            }
+            var reqCabin = _repository.GetAll().Any(s => s.FacilityId == cabinRoomDTO.FacilityId && s.CabinNumber == cabinRoomDTO.CabinNumber);
+            if (reqCabin)
+            {
+                throw new BadRequestException("Cabin already exists");
+            }
             var item = new CabinRoom
             {
                 CabinNumber = cabinRoomDTO.CabinNumber,
@@ -50,18 +60,18 @@ namespace SeatManagement2.Services
                 _repository.Save();
             }
         }
-        public void UpdateEmployeeCabinAllocationStatus(CabinRoomDTO cabin)
+        public void UpdateEmployeeCabinAllocationStatus(string action, CabinRoomDTO cabin)
         {
             var reqCabin = _repository.GetAll().FirstOrDefault(c => c.CabinNumber == cabin.CabinNumber && c.FacilityId == cabin.FacilityId);
             if (reqCabin == null)
             {
                 throw new ResourceNotFoundException("Cabin not found.");
             }
-            if (cabin.Action == "Deallocate")
+            if (action == "Deallocate")
             {
                 DeallocateEmployeeFromCabin(reqCabin, cabin);
             }
-            else if (cabin.Action == "Allocate")
+            else if (action == "Allocate")
             {
                 AllocateEmployeeToCabin(reqCabin, cabin);
             }
@@ -86,9 +96,9 @@ namespace SeatManagement2.Services
             }
             reqcabin.EmployeeId = null;
 
-            if(emp.IsAllocated==false) 
+            if (emp.IsAllocated == false)
             {
-                throw new BadRequestException("Employee is not allocated"); 
+                throw new BadRequestException("Employee is not allocated");
             }
             emp.IsAllocated = false;
             _employeerepo.Update(emp);

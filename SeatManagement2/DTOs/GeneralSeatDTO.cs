@@ -2,7 +2,6 @@
 {
     public class GeneralSeatDTO
     {
-        public string Action { get; set; }
         public int SeatNumber { get; set; }
         public int FacilityId { get; set; }
         public int EmployeeId { get; set; }

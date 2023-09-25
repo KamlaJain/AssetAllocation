@@ -4,12 +4,12 @@
 
 namespace SeatManagement2.Migrations
 {
-    public partial class init1 : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "AmenityLookUp",
+                name: "AmenityTypes",
                 columns: table => new
                 {
                     AmenityId = table.Column<int>(type: "int", nullable: false)
@@ -18,7 +18,7 @@ namespace SeatManagement2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AmenityLookUp", x => x.AmenityId);
+                    table.PrimaryKey("PK_AmenityTypes", x => x.AmenityId);
                 });
 
             migrationBuilder.CreateTable(
@@ -191,6 +191,7 @@ namespace SeatManagement2.Migrations
                     RoomAmenityId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     AmenityId = table.Column<int>(type: "int", nullable: false),
+                    AmenityTypeAmenityId = table.Column<int>(type: "int", nullable: false),
                     FacilityId = table.Column<int>(type: "int", nullable: false),
                     MeetingRoomId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -198,9 +199,9 @@ namespace SeatManagement2.Migrations
                 {
                     table.PrimaryKey("PK_RoomAmenities", x => x.RoomAmenityId);
                     table.ForeignKey(
-                        name: "FK_RoomAmenities_AmenityLookUp_AmenityId",
-                        column: x => x.AmenityId,
-                        principalTable: "AmenityLookUp",
+                        name: "FK_RoomAmenities_AmenityTypes_AmenityTypeAmenityId",
+                        column: x => x.AmenityTypeAmenityId,
+                        principalTable: "AmenityTypes",
                         principalColumn: "AmenityId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -271,9 +272,9 @@ namespace SeatManagement2.Migrations
                 column: "FacilityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoomAmenities_AmenityId",
+                name: "IX_RoomAmenities_AmenityTypeAmenityId",
                 table: "RoomAmenities",
-                column: "AmenityId");
+                column: "AmenityTypeAmenityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoomAmenities_FacilityId",
@@ -301,7 +302,7 @@ namespace SeatManagement2.Migrations
                 name: "Employees");
 
             migrationBuilder.DropTable(
-                name: "AmenityLookUp");
+                name: "AmenityTypes");
 
             migrationBuilder.DropTable(
                 name: "MeetingRooms");

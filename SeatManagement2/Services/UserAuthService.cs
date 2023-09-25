@@ -9,11 +9,7 @@ namespace SeatManagement2.Services
 {
     public class UserAuthService : IUserAuth
     {
-        private readonly IConfiguration configuration;
-        public UserAuthService(IConfiguration configuration)
-        {
-            this.configuration = configuration;
-        }
+        public UserAuthService(){ }
 
         public ClaimsPrincipal AuthenticateUser(UserCredentials credentials)
         {

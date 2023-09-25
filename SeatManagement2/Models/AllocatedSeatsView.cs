@@ -2,7 +2,7 @@
 
 namespace SeatManagement2.Models
 {
-    public class AllocatedSeats
+    public class AllocatedSeatsView
     {
         public string CityCode { get; set; }
 

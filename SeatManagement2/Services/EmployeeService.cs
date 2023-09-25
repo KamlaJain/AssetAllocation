@@ -11,10 +11,11 @@ namespace SeatManagement2.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IRepository<Employee> _repository;
-       
-        public EmployeeService(IRepository<Employee> repository)
+       private readonly IRepository<DepartmentLookUp> _departmentrepository;
+        public EmployeeService(IRepository<Employee> repository, IRepository<DepartmentLookUp> departmentrepository)
         {
             _repository = repository;
+            _departmentrepository = departmentrepository;
         }
 
         public List<Employee> GetAllEmployees(int pageNumber, int pageSize)
@@ -29,6 +30,15 @@ namespace SeatManagement2.Services
 
         public void AddEmployee(EmployeeDTO employeeDTO)
         {
+            var reqEmployee = _repository.GetAll().FirstOrDefault(c => c.EmployeeName == employeeDTO.EmployeeName);
+            if (reqEmployee != null)
+            {
+                throw new BadRequestException("Employee already exists");
+            }
+            if (_departmentrepository.GetAll().FirstOrDefault(c => c.DepartmentId == employeeDTO.DepartmentId) == null)
+            {
+                throw new ResourceNotFoundException("Departmet does not exist.");
+            }
             var item = new Employee
             {
                 EmployeeName = employeeDTO.EmployeeName,

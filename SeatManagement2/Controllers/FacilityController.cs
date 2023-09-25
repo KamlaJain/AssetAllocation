@@ -39,6 +39,10 @@ namespace SeatManagement2.Controllers
             {
                 return NotFound(ex.Message);
             }
+            catch (BadRequestException ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }   
         
         [HttpDelete("{facId}")]

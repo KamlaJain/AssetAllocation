@@ -11,7 +11,7 @@ namespace SeatManagement2.Models
         public int RoomAmenityId { get; set; }
         [ForeignKey("AmenityLookUp")]
         public int AmenityId { get; set; }
-        public virtual AmenityLookUp AmenityLookUp { get; set; }
+        public virtual AmenityType AmenityType { get; set; }
         [ForeignKey("FacilityAsset")]
         public int FacilityId { get; set; }
         public virtual Facility Facility { get; set; }

@@ -11,7 +11,7 @@ namespace SeatManagement2
 
         public DbSet<CityLookUp> CityLookUps { get; set; }
         public DbSet<BuildingLookUp> BuildingLookUps { get; set; }
-        public DbSet<AmenityLookUp> AmenityLookUp { get; set; }
+        public DbSet<AmenityType> AmenityTypes { get; set; }
         public DbSet<DepartmentLookUp> DepartmentLookUps { get; set; }
         public DbSet<Facility> Facilitys { get; set; }
         public DbSet<Employee> Employees { get; set; }
@@ -24,11 +24,11 @@ namespace SeatManagement2
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder
-                .Entity<AllocatedSeats>()
+                .Entity<AllocatedSeatsView>()
                 .ToView("AllocatedSeats")
                 .HasKey(e => new { e.FacilityName, e.SeatNumber, e.EmployeeId });
             modelBuilder
-                .Entity<UnallocatedSeats>()
+                .Entity<UnallocatedSeatsView>()
                 .ToView("UnallocatedSeats")
                 .HasKey(e => new { e.FacilityName, e.SeatNumber });
             modelBuilder

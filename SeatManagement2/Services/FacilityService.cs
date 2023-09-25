@@ -26,22 +26,30 @@ namespace SeatManagement2.Services
         {
             var cityExist = _cityrepository.GetById(facilityDTO.CityId);
             var buildingExist = _buildingrepository.GetById(facilityDTO.BuildingId);
-            if (buildingExist == null || cityExist == null)
+            if (cityExist == null)
             {
-                throw new ResourceNotFoundException("Could not find building/city");
+                throw new ResourceNotFoundException("Could not find city");
             }
-            else
+            if (buildingExist == null)
             {
-                var item = new Facility
-                {
-                    FacilityName = facilityDTO.FacilityName,
-                    FloorNumber = facilityDTO.FloorNumber,
-                    BuildingId = facilityDTO.BuildingId,
-                    CityId = facilityDTO.CityId,
-                };
-                _repository.Add(item);
-                _repository.Save();
+                throw new ResourceNotFoundException("Could not find building");
             }
+            var reqFacility = _repository.GetAll().FirstOrDefault(c => c.FacilityName == facilityDTO.FacilityName && c.FloorNumber == facilityDTO.FloorNumber);
+            if (reqFacility != null)
+            {
+                throw new BadRequestException("Facility with the same Name exist in the same floor");
+            }
+
+            var item = new Facility
+            {
+                FacilityName = facilityDTO.FacilityName,
+                FloorNumber = facilityDTO.FloorNumber,
+                BuildingId = facilityDTO.BuildingId,
+                CityId = facilityDTO.CityId,
+            };
+            _repository.Add(item);
+            _repository.Save();
+
         }
 
         public void DeleteFacility(int facId)

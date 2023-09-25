@@ -33,9 +33,9 @@ namespace SeatManagement2.Controllers
                 _departmentService.AddDepartment(departmentName);
                 return Ok();
             }
-            catch (ResourceNotFoundException ex)
+            catch (BadRequestException ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

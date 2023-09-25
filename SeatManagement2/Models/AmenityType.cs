@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SeatManagement2.Models
 {
-    public class AmenityLookUp
+    public class AmenityType
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

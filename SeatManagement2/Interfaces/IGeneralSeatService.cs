@@ -9,7 +9,7 @@ namespace SeatManagement2.Interfaces
         List<GeneralSeat> GetAllGeneralSeats();
         void AddGeneralSeat(GeneralSeatDTO generalSeatDTO);
         void DeleteGeneralSeat(int seatId);
-        void UpdateEmployeeSeatAllocationStatus(GeneralSeatDTO seat);
+        void UpdateEmployeeSeatAllocationStatus(string action, GeneralSeatDTO seat);
      
     }
 }

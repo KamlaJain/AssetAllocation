@@ -12,12 +12,15 @@ namespace SeatManagement2.Services
     {
         private readonly IRepository<GeneralSeat> _repository;
         private readonly IRepository<Employee> _employeerepo;
+        private readonly IRepository<Facility> _faciityrepo;
 
 
-        public GeneralSeatService(IRepository<GeneralSeat> repository, IRepository<Employee> employeerepo)
+
+        public GeneralSeatService(IRepository<GeneralSeat> repository, IRepository<Employee> employeerepo, IRepository<Facility> faciityrepo)
         {
             _repository = repository;
             _employeerepo = employeerepo;
+            _faciityrepo = faciityrepo;
         }
 
         public List<GeneralSeat> GetAllGeneralSeats()
@@ -27,6 +30,10 @@ namespace SeatManagement2.Services
 
         public void AddGeneralSeat(GeneralSeatDTO generalSeatDTO)
         {
+            if (!_faciityrepo.GetAll().Any(f => f.FacilityId == generalSeatDTO.FacilityId))
+            {
+                throw new ResourceNotFoundException("The Facility does not exist.");
+            }
             if (_repository.GetAll().Any(s => s.SeatNumber == generalSeatDTO.SeatNumber && s.FacilityId == generalSeatDTO.FacilityId))
             {
                 throw new BadRequestException("Seat with the same SeatNumber and FacilityId already exists.");
@@ -54,17 +61,15 @@ namespace SeatManagement2.Services
             }
         }
 
-
-
-        public void UpdateEmployeeSeatAllocationStatus(GeneralSeatDTO seat)
+        public void UpdateEmployeeSeatAllocationStatus(string action, GeneralSeatDTO seat)
         {
             var reqseat = _repository.GetAll().FirstOrDefault(s => s.SeatNumber == seat.SeatNumber && s.FacilityId == seat.FacilityId) ?? throw new ResourceNotFoundException("Seat not found.");
 
-            if (seat.Action == "Deallocate")
+            if (action == "Deallocate")
             {
                 DeallocateEmployee(reqseat, seat);
             }
-            else if (seat.Action == "Allocate")
+            else if (action == "Allocate")
             {
                 AllocateEmployee(reqseat, seat);
             }
@@ -95,8 +100,10 @@ namespace SeatManagement2.Services
 
         public void AllocateEmployee(GeneralSeat reqseat, GeneralSeatDTO seat)
         {
-            if (reqseat.EmployeeId.HasValue) throw new BadRequestException("Already allocated seat");
-
+            if (reqseat.EmployeeId.HasValue)
+            {
+                throw new BadRequestException("Already allocated seat");
+            }
             var emp = _employeerepo.GetById(seat.EmployeeId);
             if (emp == null)
             {

@@ -6,7 +6,7 @@ using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Services
 {
-    public class BuildingService: IBuildingService
+    public class BuildingService : IBuildingService
     {
         private readonly IRepository<BuildingLookUp> _repository;
 
@@ -17,15 +17,16 @@ namespace SeatManagement2.Services
 
         public List<BuildingLookUp> GetAllBuildings()
         {
-            var buildingList = _repository
-                .GetAll()
-                .ToList();
-            return buildingList;
+            return _repository.GetAll().ToList();
         }
 
         public void AddBuilding(BuildingLookUpDTO buildingLookUpDTO)
         {
-
+            var reqBuilding = _repository.GetAll().Any(b => b.BuildingName == buildingLookUpDTO.BuildingName && b.BuildingCode == buildingLookUpDTO.BuildingCode);
+            if (!reqBuilding)
+            {
+                throw new BadRequestException("Building already exists");
+            }
             var item = new BuildingLookUp
             {
                 BuildingName = buildingLookUpDTO.BuildingName,
@@ -35,7 +36,7 @@ namespace SeatManagement2.Services
             _repository.Save();
         }
 
-       
+
         public void EditBuilding(string buildingcode, BuildingLookUpDTO updatedBuilding)
         {
             var item = _repository.GetAll().FirstOrDefault(c => c.BuildingCode == buildingcode);

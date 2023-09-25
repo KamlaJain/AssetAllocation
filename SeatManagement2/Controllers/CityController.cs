@@ -16,10 +16,10 @@ namespace SeatManagement2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CityLookUpsController : Controller
+    public class CityController : Controller
     {
         public readonly ICityService _city;
-        public CityLookUpsController(ICityService icity)
+        public CityController(ICityService icity)
         {
             _city = icity;
         }
@@ -38,9 +38,9 @@ namespace SeatManagement2.Controllers
                 _city.AddCity(cityLookUpDTO);
                 return Ok();
             }
-            catch (ResourceNotFoundException ex)
+            catch (BadRequestException ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
         }
 

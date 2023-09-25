@@ -2,7 +2,7 @@
 
 namespace SeatManagement2.Models
 {
-    public class UnallocatedSeats
+    public class UnallocatedSeatsView
     {
         public string CityCode { get; set; }
 

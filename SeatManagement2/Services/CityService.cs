@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using SeatManagement2.DTOs;
 using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
@@ -22,6 +23,11 @@ namespace SeatManagement2.Services
 
         public void AddCity(CityLookUpDTO cityLookUpDTO)
         {
+            var reqCity = _repository.GetAll().FirstOrDefault(c=>c.CityName==cityLookUpDTO.CityName || c.CityCode==cityLookUpDTO.CityCode);
+            if (reqCity!=null)
+            {
+                throw new BadRequestException("City already exists");
+            }
             var item = new CityLookUp
             {
                 CityName = cityLookUpDTO.CityName,

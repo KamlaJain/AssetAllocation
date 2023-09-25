@@ -11,10 +11,12 @@ namespace SeatManagement2.Services
     public class MeetingRoomService : IMeetingRoomService
     {
         private readonly IRepository<MeetingRoom> _repository;
+        private readonly IRepository<Facility> _facilityrepository;
 
-        public MeetingRoomService(IRepository<MeetingRoom> repository)
+        public MeetingRoomService(IRepository<MeetingRoom> repository, IRepository<Facility> facilityrepository)
         {
             _repository = repository;
+            _facilityrepository = facilityrepository;
         }
 
         public List<MeetingRoom> GetAllMeetingRooms()
@@ -24,6 +26,15 @@ namespace SeatManagement2.Services
 
         public void AddMeetingRoom(MeetingRoomDTO meetingRoomDTO)
         {
+            if (!_facilityrepository.GetAll().Any(f => f.FacilityId == meetingRoomDTO.FacilityId))
+            {
+                throw new ResourceNotFoundException("The Facility does not exist.");
+            }
+            if (_repository.GetAll().Any(m => m.FacilityId == meetingRoomDTO.FacilityId && m.MeetingRoomNumber == meetingRoomDTO.MeetingRoomNumber))
+            {
+                throw new BadRequestException("Same meetingroom number exists in facility.");
+            }
+
             var item = new MeetingRoom
             {
                 MeetingRoomNumber = meetingRoomDTO.MeetingRoomNumber,
