@@ -10,7 +10,7 @@ namespace SeatManagementFE
 {
     internal class ViewReports
     {
-        public void ViewAllocatedReport(List<AllocatedSeats> report)
+        public void ViewAllocatedReport(List<AllocatedSeatsView> report)
         {
             if (report.ToList().Count != 0)
             {
@@ -26,7 +26,7 @@ namespace SeatManagementFE
                 Console.WriteLine("No Allocated Seats");
             }
         }
-        public void ViewUnallocatedReport(List<UnallocatedSeats> report)
+        public void ViewUnallocatedReport(List<UnallocatedSeatsView> report)
         {
             if (report.ToList().Count != 0)
             {

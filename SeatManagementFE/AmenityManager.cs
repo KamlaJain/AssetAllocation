@@ -11,12 +11,12 @@ using System.Xml;
 
 namespace SeatManagementFE
 {
-    public class ManageAmenities
+    public class AmenityManager
     {
         public void AddAmenityToMeetingRoom(int meetingroomId, int facilityId)
         {
             Console.WriteLine("Available amenities:");
-            IEntityManager<AmenityLookUp> amenity = new EntityManager<AmenityLookUp>("Amenity/");
+            IEntityManager<AmenityType> amenity = new EntityManager<AmenityType>("Amenity/");
             var amenities = amenity.Get();
             foreach (var am in amenities)
             {

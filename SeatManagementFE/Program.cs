@@ -30,7 +30,7 @@ namespace SeatManagementConsole
                     "\n2. Onboard meeting room" +
                     "\n3. Onboard cabin" +
                     "\n4. Onboard seats" +
-                    "\n5. Upload employee details" +
+                    "\n5. Onboard Employee" +
                     "\n6. Allocate seats" +
                     "\n7. View Reports" +
                     "\n7. Manage Amenities" +
@@ -89,7 +89,7 @@ namespace SeatManagementConsole
             Console.WriteLine("Enter employee id");
             var empid = Convert.ToInt32(Console.ReadLine());
 
-            ManageEmployee manage = new ManageEmployee();
+            EmployeeManager manage = new EmployeeManager();
 
 
             Console.WriteLine(
@@ -108,10 +108,10 @@ namespace SeatManagementConsole
                     manage.AllocateToCabin(facilityId, empid);
                     break;
                 case 3:
-                    manage.DeallocateFromSeat(facilityId);
+                    manage.DeallocateFromSeat(facilityId, empid);
                     break;
                 case 4:
-                    manage.DeallocateFromCabin(facilityId);
+                    manage.DeallocateFromCabin(facilityId, empid);
                     break;
                 case 0:
                     //Environment.Exit(0);
@@ -199,7 +199,7 @@ namespace SeatManagementConsole
             Console.WriteLine("Choose Action: \n 1--> Add Amenity to meetingRoom \n 2--> Remove Amenity From MeetingRoom");
             int choice = Convert.ToInt32(Console.ReadLine());
             
-            ManageAmenities manageAmenities = new ManageAmenities();
+            AmenityManager manageAmenities = new AmenityManager();
             switch (choice)
             {
                 case 1:

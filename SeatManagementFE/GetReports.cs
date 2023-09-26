@@ -11,16 +11,16 @@ namespace SeatManagementFE
 {
     public class GetReports
     {
-        public List<AllocatedSeats> GetAllocatedSeatsReport()
+        public List<AllocatedSeatsView> GetAllocatedSeatsReport()
         {
-            IEntityManager<AllocatedSeats> alseat = new EntityManager<AllocatedSeats>("AllocatedSeat/");
+            IEntityManager<AllocatedSeatsView> alseat = new EntityManager<AllocatedSeatsView>("AllocatedSeat/");
             var report = alseat.Get();
             
             return report;
         }
-        public List<UnallocatedSeats> GetFreeSeatsReport()
+        public List<UnallocatedSeatsView> GetFreeSeatsReport()
         {
-            IEntityManager<UnallocatedSeats> unalseat = new EntityManager<UnallocatedSeats>("UnallocatedSeat/");
+            IEntityManager<UnallocatedSeatsView> unalseat = new EntityManager<UnallocatedSeatsView>("UnallocatedSeat/");
             var report = unalseat.Get();
           
             return report;

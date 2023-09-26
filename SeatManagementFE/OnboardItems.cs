@@ -17,7 +17,7 @@ namespace SeatManagementFE
         {
 
             Console.WriteLine("Available Cities: ");
-            IEntityManager<CityLookUp> city = new EntityManager<CityLookUp>("CityLookUps/");
+            IEntityManager<CityLookUp> city = new EntityManager<CityLookUp>("City/");
             var cities = city.Get();
             foreach (var c in cities)
             {
@@ -27,8 +27,10 @@ namespace SeatManagementFE
             int cityId = Convert.ToInt32(Console.ReadLine());
 
             Console.WriteLine("Available Buildings: "); //  ONLY LIST BUILDINGS WITH GIVEN CITY ID --> FETCH BUILDING FROM FACILITY TABLE
-            IEntityManager<BuildingLookUp> building = new EntityManager<BuildingLookUp>("BuildingLookUp/");
+            IEntityManager<BuildingLookUp> building = new EntityManager<BuildingLookUp>("Building/");
             var buildings = building.Get();
+          
+
             foreach (var b in buildings)
             {
                 Console.WriteLine($"{b.BuildingId} {b.BuildingName}");
@@ -133,7 +135,6 @@ namespace SeatManagementFE
 
         public void OnboardEmployee()
         {
-
             Console.WriteLine("Enter Name of Employee");
             string name = Console.ReadLine();
 

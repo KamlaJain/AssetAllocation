@@ -17,13 +17,13 @@ namespace SeatManagementFE.Implementation
         }
         public void Allocate(T obj)
         {
-            IApiCall<T> aPICall = new ApiCall<T>(_endPoint + "/allocate");
+            IApiCall<T> aPICall = new ApiCall<T>(_endPoint);
             aPICall.UpdateData(obj);
         }
 
         public void Deallocate(T obj)
         {
-            IApiCall<T> aPICall = new ApiCall<T>(_endPoint + "/deallocate");
+            IApiCall<T> aPICall = new ApiCall<T>(_endPoint);
             aPICall.UpdateData(obj);
         }
     }

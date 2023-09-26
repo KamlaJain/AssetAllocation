@@ -40,7 +40,6 @@ namespace SeatManagementFE.Implementation
         public int PostData(T data)
         {
             var json = JsonSerializer.Serialize(data);
-            Console.WriteLine(json);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
@@ -59,8 +58,9 @@ namespace SeatManagementFE.Implementation
             var json = JsonSerializer.Serialize(data);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
+        
+            var response = client.PatchAsync(endPoint, content).Result;
 
-            var response = client.PutAsync(endPoint, content).Result;
             var responseContent = response.Content.ReadAsStringAsync();
             if (response.IsSuccessStatusCode)
             {
