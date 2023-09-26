@@ -59,11 +59,12 @@ namespace SeatManagement2.Controllers
             }
         }
         [HttpPatch]
-        public IActionResult Update([FromQuery] string action, GeneralSeatDTO seat)
+        public IActionResult Update([FromQuery] bool toAllocate, GeneralSeatDTO seat)
         {
             try
             {
-                _generalSeatService.UpdateEmployeeSeatAllocationStatus(action, seat);
+                ///api/GeneralSeat?toAllocate=true
+                _generalSeatService.UpdateEmployeeSeatAllocationStatus(toAllocate, seat);
                 return Ok();
             }
             catch (ResourceNotFoundException ex)
@@ -78,7 +79,7 @@ namespace SeatManagement2.Controllers
 
         [HttpGet]
         [Route("Reports")]
-        public IActionResult GetFreeSeats([FromQuery] bool isallocatedreport, [FromQuery] int filterChoice, [FromQuery] FilterDTO filterType)
+        public IActionResult GetReports([FromQuery] bool isallocatedreport, [FromQuery] int filterChoice, [FromQuery] FilterDTO filterType)
         {
             try
             {

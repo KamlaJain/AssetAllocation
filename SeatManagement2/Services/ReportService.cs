@@ -73,15 +73,15 @@ namespace SeatManagement2.Services
             return reqFloor.ToList();
         }
 
-        public IEnumerable<Object> GenerateSeatsReport(bool isallocatedreport, int filterChoice, FilterDTO filterType)
+        public IEnumerable<object> GenerateSeatsReport(bool isallocatedreport, int filterChoice, FilterDTO filterType)
         {
-
+            var reqBuilding = ApplyBuildingFilter(filterType);
             if (isallocatedreport == true)
             {
                 switch (filterChoice)
                 {
                     case 1: //filterByBuilding
-                        var reqBuilding = ApplyBuildingFilter(filterType);
+
                         var reqBuildingCode = reqBuilding.Select(b => b.BuildingCode);
                         var allocatedSeatsInBuilding = GetAllocatedSeatsReport().Where(a => reqBuildingCode.Contains(a.BuildingCode));
                         return allocatedSeatsInBuilding.ToList();
@@ -108,7 +108,6 @@ namespace SeatManagement2.Services
                 switch (filterChoice)
                 {
                     case 1: //filterByBuilding
-                        var reqBuilding = ApplyBuildingFilter(filterType);
                         var reqBuildingCode = reqBuilding.Select(b => b.BuildingCode);
                         var unallocatedSeatsInBuilding = GetUnallocatedSeatsReport().Where(a => reqBuildingCode.Contains(a.BuildingCode));
                         return unallocatedSeatsInBuilding.ToList();
@@ -132,8 +131,6 @@ namespace SeatManagement2.Services
         }
         public IEnumerable<object> GenerateCabinsReport(bool isallocatedreport, int filterChoice, FilterDTO filterType)
         {
-
-
             if (isallocatedreport == true)
             {
                 switch (filterChoice)

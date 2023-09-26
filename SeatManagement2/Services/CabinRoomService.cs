@@ -60,25 +60,22 @@ namespace SeatManagement2.Services
                 _repository.Save();
             }
         }
-        public void UpdateEmployeeCabinAllocationStatus(string action, CabinRoomDTO cabin)
+        public void UpdateEmployeeCabinAllocationStatus(bool toAllocate, CabinRoomDTO cabin)
         {
             var reqCabin = _repository.GetAll().FirstOrDefault(c => c.CabinNumber == cabin.CabinNumber && c.FacilityId == cabin.FacilityId);
             if (reqCabin == null)
             {
                 throw new ResourceNotFoundException("Cabin not found.");
             }
-            if (action == "Deallocate")
-            {
-                DeallocateEmployeeFromCabin(reqCabin, cabin);
-            }
-            else if (action == "Allocate")
+            if (toAllocate)
             {
                 AllocateEmployeeToCabin(reqCabin, cabin);
             }
-            else
+            else 
             {
-                throw new BadRequestException("Invalid Input");
+                DeallocateEmployeeFromCabin(reqCabin, cabin);
             }
+
         }
 
         public void DeallocateEmployeeFromCabin(CabinRoom reqcabin, CabinRoomDTO cabin)

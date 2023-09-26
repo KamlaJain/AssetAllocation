@@ -61,19 +61,17 @@ namespace SeatManagement2.Services
             }
         }
 
-        public void UpdateEmployeeSeatAllocationStatus(string action, GeneralSeatDTO seat)
+        public void UpdateEmployeeSeatAllocationStatus(bool toAllocate, GeneralSeatDTO seat)
         {
             var reqseat = _repository.GetAll().FirstOrDefault(s => s.SeatNumber == seat.SeatNumber && s.FacilityId == seat.FacilityId) ?? throw new ResourceNotFoundException("Seat not found.");
-
-            if (action == "Deallocate")
-            {
-                DeallocateEmployee(reqseat, seat);
-            }
-            else if (action == "Allocate")
+            if (toAllocate)
             {
                 AllocateEmployee(reqseat, seat);
             }
-            else { throw new BadRequestException("Invalid input"); }
+            else
+            {
+                DeallocateEmployee(reqseat, seat);
+            }
         }
         public void DeallocateEmployee(GeneralSeat reqseat, GeneralSeatDTO seat)
         {
@@ -87,10 +85,9 @@ namespace SeatManagement2.Services
             {
                 throw new BadRequestException("No employee in seat to deallocate");
             }
-            int empId = reqseat.EmployeeId.Value;
-            var employee = _employeerepo.GetById(empId);
-            employee.IsAllocated = false;
-            _employeerepo.Update(employee);
+     
+            emp.IsAllocated = false;
+            _employeerepo.Update(emp);
 
             reqseat.EmployeeId = null;
             _repository.Update(reqseat);
@@ -104,7 +101,7 @@ namespace SeatManagement2.Services
             {
                 throw new BadRequestException("Already allocated seat");
             }
-            var emp = _employeerepo.GetById(seat.EmployeeId);
+            var emp = _employeerepo.GetById((int)seat.EmployeeId!);
             if (emp == null)
             {
                 throw new ResourceNotFoundException("Employee not found.");
@@ -116,6 +113,7 @@ namespace SeatManagement2.Services
 
             emp.IsAllocated = true;
             _employeerepo.Update(emp);
+            _employeerepo.Save();
 
             reqseat.EmployeeId = seat.EmployeeId;
             _repository.Update(reqseat);

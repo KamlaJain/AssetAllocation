@@ -53,6 +53,7 @@ builder.Services.AddSingleton<IMeetingRoomService, MeetingRoomService>();
 builder.Services.AddSingleton<IAmenityService, AmenityService>();
 builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
 builder.Services.AddSingleton<IReportService, ReportService>();
+
 builder.Services.AddScoped<IUserAuth, UserAuthService>();
 
 

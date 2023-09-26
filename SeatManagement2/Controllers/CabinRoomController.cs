@@ -60,11 +60,11 @@ namespace SeatManagement2.Controllers
             }
         }
         [HttpPatch]
-        public IActionResult Update([FromQuery] string action, CabinRoomDTO seat)
+        public IActionResult Update([FromQuery] bool toAllocate, CabinRoomDTO seat)
         {
             try
             {
-                _cabinRoomService.UpdateEmployeeCabinAllocationStatus(action, seat);
+                _cabinRoomService.UpdateEmployeeCabinAllocationStatus(toAllocate, seat);
                 return Ok();
             }
             catch (ResourceNotFoundException ex)
