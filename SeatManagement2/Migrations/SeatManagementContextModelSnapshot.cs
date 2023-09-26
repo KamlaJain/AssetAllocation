@@ -291,10 +291,7 @@ namespace SeatManagement2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomAmenityId"), 1L, 1);
 
-                    b.Property<int>("AmenityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AmenityTypeAmenityId")
+                    b.Property<int?>("AmenityId")
                         .HasColumnType("int");
 
                     b.Property<int>("FacilityId")
@@ -305,7 +302,7 @@ namespace SeatManagement2.Migrations
 
                     b.HasKey("RoomAmenityId");
 
-                    b.HasIndex("AmenityTypeAmenityId");
+                    b.HasIndex("AmenityId");
 
                     b.HasIndex("FacilityId");
 
@@ -441,9 +438,7 @@ namespace SeatManagement2.Migrations
                 {
                     b.HasOne("SeatManagement2.Models.AmenityType", "AmenityType")
                         .WithMany()
-                        .HasForeignKey("AmenityTypeAmenityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AmenityId");
 
                     b.HasOne("SeatManagement2.Models.Facility", "Facility")
                         .WithMany()

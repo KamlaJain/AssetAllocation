@@ -4,7 +4,7 @@
 
 namespace SeatManagement2.Migrations
 {
-    public partial class Init : Migration
+    public partial class init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -190,8 +190,7 @@ namespace SeatManagement2.Migrations
                 {
                     RoomAmenityId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    AmenityId = table.Column<int>(type: "int", nullable: false),
-                    AmenityTypeAmenityId = table.Column<int>(type: "int", nullable: false),
+                    AmenityId = table.Column<int>(type: "int", nullable: true),
                     FacilityId = table.Column<int>(type: "int", nullable: false),
                     MeetingRoomId = table.Column<int>(type: "int", nullable: true)
                 },
@@ -199,11 +198,10 @@ namespace SeatManagement2.Migrations
                 {
                     table.PrimaryKey("PK_RoomAmenities", x => x.RoomAmenityId);
                     table.ForeignKey(
-                        name: "FK_RoomAmenities_AmenityTypes_AmenityTypeAmenityId",
-                        column: x => x.AmenityTypeAmenityId,
+                        name: "FK_RoomAmenities_AmenityTypes_AmenityId",
+                        column: x => x.AmenityId,
                         principalTable: "AmenityTypes",
-                        principalColumn: "AmenityId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "AmenityId");
                     table.ForeignKey(
                         name: "FK_RoomAmenities_Facilitys_FacilityId",
                         column: x => x.FacilityId,
@@ -272,9 +270,9 @@ namespace SeatManagement2.Migrations
                 column: "FacilityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RoomAmenities_AmenityTypeAmenityId",
+                name: "IX_RoomAmenities_AmenityId",
                 table: "RoomAmenities",
-                column: "AmenityTypeAmenityId");
+                column: "AmenityId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_RoomAmenities_FacilityId",

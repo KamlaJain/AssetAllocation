@@ -16,7 +16,7 @@ namespace SeatManagementFE
         public void AddAmenityToMeetingRoom(int meetingroomId, int facilityId)
         {
             Console.WriteLine("Available amenities:");
-            IEntityManager<AmenityType> amenity = new EntityManager<AmenityType>("Amenity/");
+            IEntityManager<AmenityType> amenity = new EntityManager<AmenityType>("AmenityType/");
             var amenities = amenity.Get();
             foreach (var am in amenities)
             {
@@ -25,7 +25,7 @@ namespace SeatManagementFE
             Console.WriteLine("Choose amenity id");
             int amenityId = Convert.ToInt32(Console.ReadLine());
 
-            IEntityManager<RoomAmenityDTO> roomAmenity = new EntityManager<RoomAmenityDTO>("RoomAmenity/AllocateAmenity");
+            IEntityManager<RoomAmenityDTO> roomAmenity = new EntityManager<RoomAmenityDTO>("Amenity/");
             var amenityToRoom = new RoomAmenityDTO()
             {
                 MeetingRoomId = meetingroomId,
@@ -33,19 +33,17 @@ namespace SeatManagementFE
                 AmenityId = amenityId
             };
             roomAmenity.Patch(amenityToRoom);
-            Console.WriteLine("Amenity added to meeting room");
-
         }
         public void RemoveAmenityFromMeetingRoom(int meetingroomId, int facilityId)
         {
             Console.WriteLine("Alloted amenities in rooms");
-            IEntityManager<RoomAmenity> roomAmenities= new EntityManager<RoomAmenity>("RoomAmenity"); 
+            IEntityManager<RoomAmenity> roomAmenities= new EntityManager<RoomAmenity>("Amenity"); 
             var amenitiesInRoom = roomAmenities.Get();
             var requiredAmenities = amenitiesInRoom.Where(r => r.MeetingRoomId == meetingroomId && r.FacilityId == facilityId);
             foreach (var am in requiredAmenities) { 
                 Console.WriteLine($"Facility Id: {am.FacilityId} || Meeting roomId: {am.MeetingRoomId} || Ameninty Id: {am.AmenityId}"); 
             };
-            IEntityManager<RoomAmenityDTO> amenity = new EntityManager<RoomAmenityDTO>("RoomAmenity/DeallocateAmenity");
+            IEntityManager<RoomAmenityDTO> amenity = new EntityManager<RoomAmenityDTO>("Amenity");
             if (requiredAmenities.Count() != 0) {
                 Console.WriteLine("Choose id of Amenity to removed");
                 var amenityId = Convert.ToInt32(Console.ReadLine());
@@ -55,7 +53,6 @@ namespace SeatManagementFE
                     AmenityId = amenityId
                 };
                 amenity.Patch(roomAmenity);
-                Console.WriteLine("Removed amenity");
             }
             else
             {

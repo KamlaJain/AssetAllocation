@@ -25,11 +25,11 @@ namespace SeatManagement2
             base.OnModelCreating(modelBuilder);
             modelBuilder
                 .Entity<AllocatedSeatsView>()
-                .ToView("AllocatedSeats")
+                .ToView("AllocatedSeatsView")
                 .HasKey(e => new { e.FacilityName, e.SeatNumber, e.EmployeeId });
             modelBuilder
                 .Entity<UnallocatedSeatsView>()
-                .ToView("UnallocatedSeats")
+                .ToView("UnallocatedSeatsView")
                 .HasKey(e => new { e.FacilityName, e.SeatNumber });
             modelBuilder
                 .Entity<AllocatedCabinsView>()

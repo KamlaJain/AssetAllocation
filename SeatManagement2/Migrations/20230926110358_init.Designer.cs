@@ -12,8 +12,8 @@ using SeatManagement2;
 namespace SeatManagement2.Migrations
 {
     [DbContext(typeof(SeatManagementContext))]
-    [Migration("20230925122222_AddViews")]
-    partial class AddViews
+    [Migration("20230926110358_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -293,10 +293,7 @@ namespace SeatManagement2.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoomAmenityId"), 1L, 1);
 
-                    b.Property<int>("AmenityId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AmenityTypeAmenityId")
+                    b.Property<int?>("AmenityId")
                         .HasColumnType("int");
 
                     b.Property<int>("FacilityId")
@@ -307,7 +304,7 @@ namespace SeatManagement2.Migrations
 
                     b.HasKey("RoomAmenityId");
 
-                    b.HasIndex("AmenityTypeAmenityId");
+                    b.HasIndex("AmenityId");
 
                     b.HasIndex("FacilityId");
 
@@ -443,9 +440,7 @@ namespace SeatManagement2.Migrations
                 {
                     b.HasOne("SeatManagement2.Models.AmenityType", "AmenityType")
                         .WithMany()
-                        .HasForeignKey("AmenityTypeAmenityId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AmenityId");
 
                     b.HasOne("SeatManagement2.Models.Facility", "Facility")
                         .WithMany()

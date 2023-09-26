@@ -19,9 +19,7 @@ namespace SeatManagement2.Services
         }
 
         public void AddAmenity(string amenityName)
-        {
-            var amenities = _repository.GetAll().FirstOrDefault(a => a.AmenityName == amenityName);
-            
+        {            
             var item = new AmenityType
             {
                 AmenityName = amenityName

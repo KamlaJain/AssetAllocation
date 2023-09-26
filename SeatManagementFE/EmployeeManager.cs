@@ -44,14 +44,12 @@ namespace SeatManagementFE
             var cab = cabin.Get();
 
             var cabsinfacility = cab.Where(b => b.FacilityId == facilityId);
-
             foreach (var c in cabsinfacility)
             {
                 Console.WriteLine($" {c.CabinNumber}");
             }
             Console.WriteLine("Choose cabin to onboard employee");
             int cabinnumber = Convert.ToInt32(Console.ReadLine());
-
 
             IEntityManager<CabinRoom> empallocation = new EntityManager<CabinRoom>($"CabinRoom?toAllocate={true}");
             var allocation = new CabinRoom

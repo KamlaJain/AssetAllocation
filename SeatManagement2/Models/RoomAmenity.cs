@@ -9,14 +9,18 @@ namespace SeatManagement2.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int RoomAmenityId { get; set; }
-        [ForeignKey("AmenityLookUp")]
-        public int AmenityId { get; set; }
-        public virtual AmenityType AmenityType { get; set; }
-        [ForeignKey("FacilityAsset")]
+        public int? AmenityId { get; set; }
         public int FacilityId { get; set; }
-        public virtual Facility Facility { get; set; }
-        [ForeignKey("MeetingRoom")]
         public int? MeetingRoomId { get; set; }
+
+        [ForeignKey("AmenityId")]
+        public virtual AmenityType? AmenityType { get; set; }
+        [ForeignKey("FacilityId")]
+        public virtual Facility Facility { get; set; }
+        [ForeignKey("MeetingRoomId")]
         public virtual MeetingRoom? MeetingRoom { get; set; }
+
+
+
     }
 }

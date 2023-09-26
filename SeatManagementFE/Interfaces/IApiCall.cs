@@ -12,6 +12,5 @@ namespace SeatManagementFE.Interfaces
         int PostData(T data);
         List<T> GetData();
         bool UpdateData(T data);
-
     }
 }

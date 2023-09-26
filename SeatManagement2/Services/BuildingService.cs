@@ -23,7 +23,7 @@ namespace SeatManagement2.Services
         public void AddBuilding(BuildingLookUpDTO buildingLookUpDTO)
         {
             var reqBuilding = _repository.GetAll().Any(b => b.BuildingName == buildingLookUpDTO.BuildingName && b.BuildingCode == buildingLookUpDTO.BuildingCode);
-            if (!reqBuilding)
+            if (reqBuilding)
             {
                 throw new BadRequestException("Building already exists");
             }
