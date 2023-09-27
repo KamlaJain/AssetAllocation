@@ -5,7 +5,7 @@ namespace SeatManagement2.Interfaces
 {
     public interface IReportService
     {
-        IEnumerable<Object> GenerateSeatsReport(bool isallocatedreport, int filterChoice, FilterDTO filterType);
-        IEnumerable<Object> GenerateCabinsReport(bool isallocatedreport, int filterChoice, FilterDTO filterType);
+        IEnumerable<IReportView> GenerateSeatsReport(bool isUnallocatedReport, string buildingCode, string facilityName, int? floorNumber);
+        IEnumerable<IReportView> GenerateCabinsReport(bool isUnallocatedReport, string buildingCode, string facilityName, int? floorNumber);
     }
 }

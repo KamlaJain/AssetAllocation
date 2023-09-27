@@ -17,6 +17,7 @@ namespace SeatManagement2.Exceptions
             {
                 await _next(context);
             }
+            
             catch
             {
                 context.Response.ContentType = "application/json";
@@ -30,6 +31,7 @@ namespace SeatManagement2.Exceptions
                 var result = JsonSerializer.Serialize(errorResponse);
                 await context.Response.WriteAsync(result);
             }
+           
         }
     }
 }

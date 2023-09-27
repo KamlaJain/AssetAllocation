@@ -40,6 +40,7 @@ namespace SeatManagement2.Controllers
             {
                 return BadRequest(ex.Message);
             }
+            
         }
 
         [HttpDelete("{meetingRoomId}")]

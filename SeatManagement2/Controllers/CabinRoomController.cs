@@ -79,12 +79,12 @@ namespace SeatManagement2.Controllers
 
         [HttpGet]
         [Route("Reports")]
-        public IActionResult GetReports([FromQuery] bool isallocatedreport, [FromQuery] int filterChoice, [FromQuery] FilterDTO filterType)
+        public IActionResult GetReports([FromQuery] bool isUnallocatedReport, [FromQuery] string? buildingCode, [FromQuery] string? facilityName, [FromQuery] int? floorNumber)
         {
             try
             {
                 //api/generalseat/reports/?isallocatedreport=true
-                return Ok(_reportService.GenerateCabinsReport(isallocatedreport, filterChoice, filterType));
+                return Ok(_reportService.GenerateCabinsReport(isUnallocatedReport, buildingCode, facilityName, floorNumber));
 
             }
             catch (ResourceNotFoundException ex)

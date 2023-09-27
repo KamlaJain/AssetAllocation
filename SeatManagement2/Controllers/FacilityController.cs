@@ -59,21 +59,6 @@ namespace SeatManagement2.Controllers
                 return NotFound(ex.Message);
             }
         }
-
-        //api/facility/{id}/amenity
-       /* [HttpPost("{facilityId}")]
-        public IActionResult AddAmenityToFacility(int facilityId, int amenityId)
-        {
-            try
-            {
-                _facility.AddAmenityToFacility(facilityId, amenityId);
-                return Ok();
-            }
-            catch
-            {
-                return BadRequest();
-            }
-        }*/
     }
 }
 

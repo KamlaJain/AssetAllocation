@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using SeatManagement2.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace SeatManagement2.Models
 {
-    public class UnallocatedSeatsView
+    public class UnallocatedSeatsView : IReportView
     {
         public string CityCode { get; set; }
 
@@ -13,6 +14,11 @@ namespace SeatManagement2.Models
         public string FacilityName { get; set; }
 
         public int SeatNumber { get; set; }
+        string IReportView.BuildingCode => this.BuildingCode;
+
+        string IReportView.FacilityName => this.FacilityName;
+
+        int? IReportView.FloorNumber => this.FloorNumber;
 
     }
 }

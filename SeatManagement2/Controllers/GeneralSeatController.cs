@@ -4,6 +4,7 @@ using SeatManagement2.Interfaces;
 using SeatManagement2.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using SeatManagement2.Exceptions;
+using System.Security.AccessControl;
 
 namespace SeatManagement2.Controllers
 {
@@ -79,12 +80,12 @@ namespace SeatManagement2.Controllers
 
         [HttpGet]
         [Route("Reports")]
-        public IActionResult GetReports([FromQuery] bool isallocatedreport, [FromQuery] int filterChoice, [FromQuery] FilterDTO filterType)
+        public IActionResult GetReports([FromQuery] bool isUnallocatedReport, [FromQuery] string? buildingCode, [FromQuery] string? facilityName, [FromQuery] int? floorNumber)
         {
             try
             {
                 //api/generalseat/reports/?isallocatedreport=true
-                return Ok(_reportService.GenerateSeatsReport(isallocatedreport, filterChoice, filterType));
+                return Ok(_reportService.GenerateSeatsReport(isUnallocatedReport, buildingCode, facilityName, floorNumber));
 
             }
             catch (ResourceNotFoundException ex)

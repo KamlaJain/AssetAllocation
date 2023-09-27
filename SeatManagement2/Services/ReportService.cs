@@ -3,6 +3,7 @@ using SeatManagement2.DTOs;
 using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
+using System.Composition;
 
 namespace SeatManagement2.Services
 {
@@ -15,6 +16,7 @@ namespace SeatManagement2.Services
         private readonly IRepository<UnallocatedCabinsView> _unallocatedcabinsview;
         private readonly IRepository<AllocatedCabinsView> _allocatedcabinsview;
 
+
         public ReportService(IRepository<UnallocatedSeatsView> unallocatedseatsview, IRepository<AllocatedSeatsView> allocatedseatsview, IRepository<BuildingLookUp> buildingrepository, IRepository<Facility> facilityrepository, IRepository<AllocatedCabinsView> allocatedcabinsview, IRepository<UnallocatedCabinsView> unallocatedcabinsview)
         {
             _unallocatedseatsview = unallocatedseatsview;
@@ -25,164 +27,60 @@ namespace SeatManagement2.Services
             _unallocatedcabinsview = unallocatedcabinsview;
         }
 
-        public IEnumerable<UnallocatedSeatsView> GetUnallocatedSeatsReport()
+        public IEnumerable<IReportView> GetUnallocatedSeatsReport()
         {
-            return _unallocatedseatsview.GetAll().ToList();
+            var unallocatedSeats = _unallocatedseatsview.GetAll().ToList();
+            return unallocatedSeats.Cast<IReportView>();
         }
 
-        public IEnumerable<AllocatedSeatsView> GetAllocatedSeatsReport()
+        public IEnumerable<IReportView> GetAllocatedSeatsReport()
         {
-            return _allocatedseatsview.GetAll().ToList();
+            var allocatedSeats = _allocatedseatsview.GetAll().ToList();
+            return allocatedSeats.Cast<IReportView>();
         }
-        public IEnumerable<UnallocatedCabinsView> GetUnallocatedCabinsReport()
+        public IEnumerable<IReportView> GetUnallocatedCabinsReport()
         {
-            return _unallocatedcabinsview.GetAll().ToList();
-        }
-
-        public IEnumerable<AllocatedCabinsView> GetAllocatedCabinsReport()
-        {
-            return _allocatedcabinsview.GetAll().ToList();
+            var unallocatedCabins = _unallocatedcabinsview.GetAll().ToList();
+            return unallocatedCabins.Cast<IReportView>();
         }
 
-        public IEnumerable<BuildingLookUp> ApplyBuildingFilter(FilterDTO filterType)
+        public IEnumerable<IReportView> GetAllocatedCabinsReport()
         {
-            var reqBuilding = _buildingrepository.GetAll().Where(b => b.BuildingId == filterType.BuildingId);
-            if (reqBuilding == null)
+            var allocatedCabins = _allocatedcabinsview.GetAll().ToList();
+            return allocatedCabins.Cast<IReportView>();
+        }
+
+        public IEnumerable<IReportView> GenerateSeatsReport(bool isUnallocatedReport, string? buildingCode, string? facilityName, int? floorNumber)
+        {
+            var report = isUnallocatedReport ? GetUnallocatedSeatsReport(): GetAllocatedSeatsReport();
+            report = ApplyFilters(report, buildingCode, facilityName, floorNumber);
+            return report.ToList();
+        }
+
+        public IEnumerable<IReportView> GenerateCabinsReport(bool isUnallocatedReport, string? buildingCode, string? facilityName, int? floorNumber)
+        {
+            var report = isUnallocatedReport ? GetUnallocatedCabinsReport() : GetAllocatedCabinsReport();
+            report = ApplyFilters(report, buildingCode, facilityName, floorNumber);
+            return report.ToList();
+        }
+
+        private IEnumerable<IReportView> ApplyFilters(IEnumerable<IReportView> report, string? buildingCode, string? facilityName, int? floorNumber)
+        {
+            if (buildingCode != null)
             {
-                throw new ResourceNotFoundException("No buildings found");
+                report = report.Where(s => s.BuildingCode == buildingCode);
             }
-            return reqBuilding.ToList();
-        }
-
-        public IEnumerable<Facility> ApplyFacilityFilter(FilterDTO filterType)
-        {
-            var reqFacility = _facilityrepository.GetAll().Where(f => f.FacilityId == filterType.FacilityId);
-            if (reqFacility == null)
+            if (facilityName != null)
             {
-                throw new ResourceNotFoundException("No facilities found");
+                report = report.Where(s => s.FacilityName == facilityName);
             }
-            return reqFacility.ToList();
-        }
-        public IEnumerable<Facility> ApplyFloorFilter(FilterDTO filterType)
-        {
-            var reqFloor = _facilityrepository.GetAll().Where(f => f.FloorNumber == filterType.FloorNumber);
-            if (reqFloor == null)
+            if (floorNumber.HasValue && floorNumber.Value != 0)
             {
-                throw new ResourceNotFoundException("No facilities in entered floor found");
+                report = report.Where(s => s.FloorNumber == floorNumber);
             }
-            return reqFloor.ToList();
-        }
-
-        public IEnumerable<object> GenerateSeatsReport(bool isallocatedreport, int filterChoice, FilterDTO filterType)
-        {
-            var reqBuilding = ApplyBuildingFilter(filterType);
-            if (isallocatedreport == true)
-            {
-                switch (filterChoice)
-                {
-                    case 1: //filterByBuilding
-
-                        var reqBuildingCode = reqBuilding.Select(b => b.BuildingCode);
-                        var allocatedSeatsInBuilding = GetAllocatedSeatsReport().Where(a => reqBuildingCode.Contains(a.BuildingCode));
-                        return allocatedSeatsInBuilding.ToList();
-
-                    case 2: //filterbyFacility
-                        var reqFacility = ApplyFacilityFilter(filterType);
-                        var reqFacilityName = reqFacility.Select(f => f.FacilityName);
-                        var allocatedSeatsInFacility = GetAllocatedSeatsReport().Where(a => reqFacilityName.Contains(a.FacilityName));
-                        return allocatedSeatsInFacility.ToList();
-
-                    case 3: //filterByFloor
-                        var reqFloor = ApplyFloorFilter(filterType);
-                        var reqFloorNumber = reqFloor.Select(f => f.FloorNumber);
-                        var allocatedSeatsInFloor = GetAllocatedSeatsReport().Where(f => reqFloorNumber.Contains(f.FloorNumber));
-                        return allocatedSeatsInFloor.ToList();
-
-                    default:
-                        return GetAllocatedSeatsReport();
-                }
-            }
-
-            else
-            {
-                switch (filterChoice)
-                {
-                    case 1: //filterByBuilding
-                        var reqBuildingCode = reqBuilding.Select(b => b.BuildingCode);
-                        var unallocatedSeatsInBuilding = GetUnallocatedSeatsReport().Where(a => reqBuildingCode.Contains(a.BuildingCode));
-                        return unallocatedSeatsInBuilding.ToList();
-
-                    case 2: //filterbyFacility
-                        var reqFacility = ApplyFacilityFilter(filterType);
-                        var reqFacilityName = reqFacility.Select(f => f.FacilityName);
-                        var unallocatedSeatsInFacility = GetUnallocatedSeatsReport().Where(a => reqFacilityName.Contains(a.FacilityName));
-                        return unallocatedSeatsInFacility.ToList();
-
-                    case 3: //filterByFloor
-                        var reqFloor = ApplyFloorFilter(filterType);
-                        var reqFloorNumber = reqFloor.Select(f => f.FloorNumber);
-                        var unallocatedSeatsInFloor = GetUnallocatedSeatsReport().Where(f => reqFloorNumber.Contains(f.FloorNumber));
-                        return unallocatedSeatsInFloor.ToList();
-
-                    default:
-                        return GetUnallocatedSeatsReport();
-                }
-            }
-        }
-        public IEnumerable<object> GenerateCabinsReport(bool isallocatedreport, int filterChoice, FilterDTO filterType)
-        {
-            if (isallocatedreport == true)
-            {
-                switch (filterChoice)
-                {
-                    case 1: //filterByBuilding
-                        var reqBuilding = ApplyBuildingFilter(filterType);
-                        var reqBuildingCode = reqBuilding.Select(b => b.BuildingCode);
-                        var allocatedCabinsInBuilding = GetAllocatedCabinsReport().Where(a => reqBuildingCode.Contains(a.BuildingCode));
-                        return allocatedCabinsInBuilding.ToList();
-
-                    case 2: //filterbyFacility
-                        var reqFacility = ApplyFacilityFilter(filterType);
-                        var reqFacilityName = reqFacility.Select(f => f.FacilityName);
-                        var allocatedCabinsInFacility = GetAllocatedCabinsReport().Where(a => reqFacilityName.Contains(a.FacilityName));
-                        return allocatedCabinsInFacility.ToList();
-
-                    case 3: //filterByFloor
-                        var reqFloor = ApplyFloorFilter(filterType);
-                        var reqFloorNumber = reqFloor.Select(f => f.FloorNumber);
-                        var allocatedCabinsInFloor = GetAllocatedCabinsReport().Where(f => reqFloorNumber.Contains(f.FloorNumber));
-                        return allocatedCabinsInFloor.ToList();
-
-                    default:
-                        return GetAllocatedCabinsReport();
-                }
-            }
-            else
-            {
-                switch (filterChoice)
-                {
-                    case 1: //filterByBuilding
-                        var reqBuilding = ApplyBuildingFilter(filterType);
-                        var reqBuildingCode = reqBuilding.Select(b => b.BuildingCode);
-                        var unallocatedCabinsInBuilding = GetUnallocatedCabinsReport().Where(a => reqBuildingCode.Contains(a.BuildingCode));
-                        return unallocatedCabinsInBuilding.ToList();
-
-                    case 2: //filterbyFacility
-                        var reqFacility = ApplyFacilityFilter(filterType);
-                        var reqFacilityName = reqFacility.Select(f => f.FacilityName);
-                        var unallocatedCabinsInFacility = GetUnallocatedCabinsReport().Where(a => reqFacilityName.Contains(a.FacilityName));
-                        return unallocatedCabinsInFacility.ToList();
-
-                    case 3: //filterByFloor
-                        var reqFloor = ApplyFloorFilter(filterType);
-                        var reqFloorNumber = reqFloor.Select(f => f.FloorNumber);
-                        var unallocatedCabinsInFloor = GetUnallocatedCabinsReport().Where(f => reqFloorNumber.Contains(f.FloorNumber));
-                        return unallocatedCabinsInFloor.ToList();
-
-                    default:
-                        return GetUnallocatedCabinsReport();
-                }
-            }
+            return report.ToList();
         }
     }
+
 }
+
