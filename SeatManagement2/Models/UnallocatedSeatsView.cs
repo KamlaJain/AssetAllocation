@@ -14,10 +14,9 @@ namespace SeatManagement2.Models
         public string FacilityName { get; set; }
 
         public int SeatNumber { get; set; }
+        string IReportView.CityCode => this.CityCode;
         string IReportView.BuildingCode => this.BuildingCode;
-
         string IReportView.FacilityName => this.FacilityName;
-
         int? IReportView.FloorNumber => this.FloorNumber;
 
     }

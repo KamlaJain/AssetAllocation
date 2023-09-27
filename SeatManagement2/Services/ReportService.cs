@@ -50,22 +50,26 @@ namespace SeatManagement2.Services
             return allocatedCabins.Cast<IReportView>();
         }
 
-        public IEnumerable<IReportView> GenerateSeatsReport(bool isUnallocatedReport, string? buildingCode, string? facilityName, int? floorNumber)
+        public IEnumerable<IReportView> GenerateSeatsReport(bool isUnallocatedReport, string? cityCode, string? buildingCode, string? facilityName, int? floorNumber)
         {
             var report = isUnallocatedReport ? GetUnallocatedSeatsReport(): GetAllocatedSeatsReport();
-            report = ApplyFilters(report, buildingCode, facilityName, floorNumber);
+            report = ApplyFilters(report, cityCode, buildingCode, facilityName, floorNumber);
             return report.ToList();
         }
 
-        public IEnumerable<IReportView> GenerateCabinsReport(bool isUnallocatedReport, string? buildingCode, string? facilityName, int? floorNumber)
+        public IEnumerable<IReportView> GenerateCabinsReport(bool isUnallocatedReport, string? cityCode, string? buildingCode, string? facilityName, int? floorNumber)
         {
             var report = isUnallocatedReport ? GetUnallocatedCabinsReport() : GetAllocatedCabinsReport();
-            report = ApplyFilters(report, buildingCode, facilityName, floorNumber);
+            report = ApplyFilters(report, cityCode, buildingCode, facilityName, floorNumber);
             return report.ToList();
         }
 
-        private IEnumerable<IReportView> ApplyFilters(IEnumerable<IReportView> report, string? buildingCode, string? facilityName, int? floorNumber)
+        private IEnumerable<IReportView> ApplyFilters(IEnumerable<IReportView> report, string? cityCode, string? buildingCode, string? facilityName, int? floorNumber)
         {
+            if(cityCode!=null)
+            {
+                report = report.Where(s => s.CityCode == cityCode);
+            }
             if (buildingCode != null)
             {
                 report = report.Where(s => s.BuildingCode == buildingCode);
