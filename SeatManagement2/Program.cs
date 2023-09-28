@@ -42,11 +42,6 @@ builder.Services.AddSingleton<IRepository<RoomAmenity>, Repository<RoomAmenity>>
 builder.Services.AddSingleton<ISeatReport, SeatReport>();
 builder.Services.AddSingleton<ICabinReport, CabinReport>();
 
-/*builder.Services.AddSingleton<IRepository<UnallocatedSeatsView>, Repository<UnallocatedSeatsView>>();
-builder.Services.AddSingleton<IRepository<UnallocatedCabinsView>, Repository<UnallocatedCabinsView>>();
-builder.Services.AddSingleton<IRepository<AllocatedCabinsView>, Repository<AllocatedCabinsView>>();*/
-
-
 builder.Services.AddSingleton<ICityService, CityService>();
 builder.Services.AddSingleton<IBuildingService, BuildingService>();
 builder.Services.AddSingleton<IFacilityService, FacilityService>();
@@ -60,6 +55,7 @@ builder.Services.AddSingleton<IEmployeeService, EmployeeService>();
 builder.Services.AddSingleton<IReportService, ReportService>();
 
 builder.Services.AddScoped<IUserAuth, UserAuthService>();
+builder.Services.AddMemoryCache();
 
 
 

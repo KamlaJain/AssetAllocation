@@ -56,8 +56,5 @@ namespace SeatManagement2.Controllers
                 return NotFound(ex.Message);
             }
         }
-
-        //api/meetingroom/{3}/amenity
-
     }
 }

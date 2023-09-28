@@ -27,13 +27,6 @@ namespace SeatManagement2.Services
                 report = report.Where(s => s.EmployeeId != null);
             }
 
-            report = NewMethod(cityCode, buildingCode, facilityName, floorNumber, report);
-
-            return report.ToList();
-        }
-
-        private static IQueryable<SeatsViewDTO> NewMethod(string? cityCode, string? buildingCode, string? facilityName, int? floorNumber, IQueryable<SeatsViewDTO> report)
-        {
             if (cityCode != null)
             {
                 report = report.Where(s => s.CityCode == cityCode);
@@ -51,7 +44,7 @@ namespace SeatManagement2.Services
                 report = report.Where(s => s.FloorNumber == floorNumber);
             }
 
-            return report;
+            return report.ToList();
         }
 
         public List<CabinsViewDTO> GenerateCabinsReport(bool isUnallocatedReport, string? cityCode, string? buildingCode, string? facilityName, int? floorNumber)

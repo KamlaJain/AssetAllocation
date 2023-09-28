@@ -57,13 +57,12 @@ namespace SeatManagement2.Controllers
                 return NotFound(ex.Message);
             }
         }
-        [HttpPatch]
-        public IActionResult Update([FromQuery] bool toAllocate, GeneralSeatDTO seat)
+        [HttpPatch("{seatId}")]
+        public IActionResult Update(int seatId, int? employeeId)
         {
             try
             {
-                ///api/GeneralSeat?toAllocate=true
-                _generalSeatService.UpdateEmployeeSeatAllocationStatus(toAllocate, seat);
+                _generalSeatService.UpdateEmployeeSeatAllocationStatus(seatId, employeeId);
                 return Ok();
             }
             catch (ResourceNotFoundException ex)
@@ -82,7 +81,6 @@ namespace SeatManagement2.Controllers
         {
             try
             {
-                ///api/GeneralSeat/Reports?isUnallocatedReport=true&cityCode=1&buildingCode=1&facilityName=1&floorNumber=10' \
                 return Ok(_reportService.GenerateSeatsReport(isUnallocatedReport, cityCode, buildingCode, facilityName, floorNumber));
 
             }

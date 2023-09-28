@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using NuGet.ContentModel;
+using SeatManagement2.Models;
 using SeatManagementFE.Interfaces;
 using System.Text;
 using JsonSerializer = System.Text.Json.JsonSerializer;
@@ -66,5 +68,17 @@ namespace SeatManagementFE.Implementation
             }
         }
 
+        public bool UpdateAssetData(int assetId, int? employeeId)
+        {
+            var response = client.PatchAsync(endPoint, null).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

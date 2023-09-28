@@ -5,5 +5,6 @@
         public int Add(T dto);
         public List<T> Get();
         public bool Patch(T dto);
+        public bool PatchEmployeeDetails(int assetId, int? employeeId);
     }
 }

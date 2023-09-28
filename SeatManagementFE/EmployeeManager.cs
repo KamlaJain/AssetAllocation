@@ -2,84 +2,117 @@
 using SeatManagement2.Models;
 using SeatManagementFE.Implementation;
 using SeatManagementFE.Interfaces;
+using System;
 
 namespace SeatManagementFE
 {
     public class EmployeeManager
     {
-        public void AllocateToSeat(int facilityId, int empid)
+        public void ManageEmployee()
+
         {
-            Console.WriteLine("Available seats in Facilty:");
+            Console.WriteLine(
+                "\n 1--> Allocate employee to  Seat " +
+                "\n 2--> Allocate employee to  Cabin " +
+                "\n 3--> Deallocate employee From Seat " +
+                "\n 4--> Deallocate employee From Cabin " +
+                "\n 0-->exit");
+            int choice = Convert.ToInt32(Console.ReadLine());
+            switch (choice)
+            {
+                case 1:
+                    AllocateToSeat();
+                    break;
+                case 2:
+                    AllocateToCabin();
+                    break;
+                case 3:
+                    DeallocateFromSeat();
+                    break;
+                case 4:
+                    DeallocateFromCabin();
+                    break;
+                case 0:
+                    //Environment.Exit(0);
+                    break;
+            }
+        }
+
+        public static void AllocateToSeat()
+        {
+            Console.WriteLine("Available Seats: ");
             IEntityManager<GeneralSeat> seat = new EntityManager<GeneralSeat>("GeneralSeat/");
-            var gseat = seat.Get();
-
-            var seatsinfacility = gseat.Where(b => b.FacilityId == facilityId);
-
-            foreach (var c in seatsinfacility)
+            var seats = seat.Get();
+            var reqSeats = seats.Where(s => s.EmployeeId == null);
+            foreach (var c in reqSeats)
             {
-                Console.WriteLine($"{c.SeatNumber}");
+                Console.WriteLine($"{c.SeatId} {c.SeatNumber}");
             }
-            Console.WriteLine("Choose seat to onboard employee");
-            int seatnumber = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Choose seat id");
+            int seatId = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter employee id");
+            int empid = Convert.ToInt32(Console.ReadLine());
 
-            IEntityManager<GeneralSeat> empallocation = new EntityManager<GeneralSeat>($"GeneralSeat?toAllocate={true}");
-            var allocation = new GeneralSeat
-            {
-                FacilityId = facilityId,
-                EmployeeId = empid,
-                SeatNumber = seatnumber,
-            };
-            empallocation.Patch(allocation);
-            Console.WriteLine("Employee Allocated");
+            IEntityManager<GeneralSeat> empallocation = new EntityManager<GeneralSeat>($"GeneralSeat/{seatId}?employeeId={empid}");
+            var response = empallocation.PatchEmployeeDetails(seatId,empid);
+            Console.WriteLine( response == true ? "Success" : "Failed");
+
         }
-        public void AllocateToCabin(int facilityId, int empid)
+        public static void AllocateToCabin()
         {
-            Console.WriteLine("Available cabins in facility:");
-            IEntityManager<CabinRoom> cabin = new EntityManager<CabinRoom>($"CabinRoom?toAllocate={true}");
-            var cab = cabin.Get();
-
-            var cabsinfacility = cab.Where(b => b.FacilityId == facilityId);
-            foreach (var c in cabsinfacility)
+            Console.WriteLine("Available Cabins: ");
+            IEntityManager<CabinRoom> cabin = new EntityManager<CabinRoom>("CabinRoom/");
+            var cabins = cabin.Get();
+            var reqCabins= cabins.Where(s=>s.EmployeeId== null);
+            foreach (var c in reqCabins)
             {
-                Console.WriteLine($" {c.CabinNumber}");
+                Console.WriteLine($"{c.CabinId} {c.CabinNumber}");
             }
-            Console.WriteLine("Choose cabin to onboard employee");
-            int cabinnumber = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Choose cabin id");
+            int cabinId = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter employee id");
+            int empid = Convert.ToInt32(Console.ReadLine());
 
-            IEntityManager<CabinRoom> empallocation = new EntityManager<CabinRoom>($"CabinRoom?toAllocate={true}");
-            var allocation = new CabinRoom
-            {
-                FacilityId = facilityId,
-                EmployeeId = empid,
-                CabinNumber = cabinnumber,
-            };
-            empallocation.Patch(allocation);
+            IEntityManager<CabinRoom> empallocation = new EntityManager<CabinRoom>($"CabinRoom/{cabinId}?employeeId={empid}");
+            var response = empallocation.PatchEmployeeDetails(cabinId, empid);
+            Console.WriteLine(response == true ? "Success" : "Failed");
+
         }
-        public void DeallocateFromSeat(int facilityId, int empid)
+        public static void DeallocateFromSeat()
         {
-            IEntityManager<GeneralSeat> empdeallocation = new EntityManager<GeneralSeat>($"GeneralSeat?toAllocate=false");
-            Console.WriteLine("Enter seatnumber from which employee has to be removed ");
-            int seatnum = Convert.ToInt32(Console.ReadLine());
-            var deallocatedseat = new GeneralSeat
+            Console.WriteLine("Available Seats: ");
+            IEntityManager<GeneralSeat> seat = new EntityManager<GeneralSeat>("GeneralSeat/");
+            var seats = seat.Get();
+            var reqSeats = seats.Where(s => s.EmployeeId != null);
+            foreach (var c in reqSeats)
             {
-                FacilityId = facilityId,
-                SeatNumber = seatnum,
-                EmployeeId = empid
-            };
-            empdeallocation.Patch(deallocatedseat);
+                Console.WriteLine($"{c.SeatId} {c.SeatNumber}");
+            }
+            Console.WriteLine("Choose seat id");
+            int seatId = Convert.ToInt32(Console.ReadLine());
+            int? empId = null;
+
+            IEntityManager<GeneralSeat> empdeallocation = new EntityManager<GeneralSeat>($"GeneralSeat/{seatId}");
+            var response = empdeallocation.PatchEmployeeDetails(seatId, empId);
+            Console.WriteLine(response == true ? "Success" : "Failed");
         }
-        public void DeallocateFromCabin(int facilityId, int empid)
+        public static void DeallocateFromCabin()
         {
-            IEntityManager<CabinRoom> empdeallocation = new EntityManager<CabinRoom>($"CabinRoom?toAllocate={false}");
-            Console.WriteLine("Enter CabinRoom number from which employee has to be removed ");
-            int cabinnum = Convert.ToInt32(Console.ReadLine());
-            var deallocatedcabin = new CabinRoom
+            Console.WriteLine("Available Cabins: ");
+            IEntityManager<CabinRoom> cabin = new EntityManager<CabinRoom>("CabinRoom/");
+            var cabins = cabin.Get();
+            var reqCabins = cabins.Where(s => s.EmployeeId != null);
+            foreach (var c in reqCabins)
             {
-                FacilityId = facilityId,
-                EmployeeId = empid,
-                CabinNumber = cabinnum,
-            };
-            empdeallocation.Patch(deallocatedcabin);
+                Console.WriteLine($"{c.CabinId} {c.CabinNumber}");
+            }
+            Console.WriteLine("Choose cabin id");
+            int cabinId = Convert.ToInt32(Console.ReadLine());
+            int? empId = null;
+
+            IEntityManager<CabinRoom> empdeallocation = new EntityManager<CabinRoom>($"CabinRoom/{cabinId}");
+            var response = empdeallocation.PatchEmployeeDetails(cabinId, empId);
+            Console.WriteLine(response == true ? "Success" : "Failed");
         }
     }
 }

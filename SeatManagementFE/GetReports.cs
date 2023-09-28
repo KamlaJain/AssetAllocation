@@ -10,9 +10,10 @@ namespace SeatManagementFE
 
         public void GetAllocatedSeatsReport()
         {
-            string cityFilter, buildingFilter, facilityFilter;
-            int floorFilter;
-            NewMethod(out cityFilter, out buildingFilter, out facilityFilter, out floorFilter);
+            var cityFilter = filter.CityFilter();
+            var buildingFilter = filter.BuildingFilter();
+            var facilityFilter = filter.FacilityNameFilter();
+            var floorFilter = filter.FloorFilter();
             IEntityManager<SeatsViewDTO> alseat = new EntityManager<SeatsViewDTO>($"GeneralSeat/Reports?isUnallocatedReport=false&cityCode={cityFilter}&buildingCode={buildingFilter}&facilityName={facilityFilter}&floorNumber={floorFilter}");
             var report = alseat.Get();
             if (report.ToList().Count != 0)
@@ -28,15 +29,6 @@ namespace SeatManagementFE
                 Console.WriteLine("No Allocated Seats");
             }
         }
-
-        private void NewMethod(out string cityFilter, out string buildingFilter, out string facilityFilter, out int floorFilter)
-        {
-            cityFilter = filter.CityFilter();
-            buildingFilter = filter.BuildingFilter();
-            facilityFilter = filter.FacilityNameFilter();
-            floorFilter = filter.FloorFilter();
-        }
-
         public void GetFreeSeatsReport()
         {
             var cityFilter = filter.CityFilter();

@@ -8,6 +8,6 @@ namespace SeatManagement2.Interfaces
         List<CabinRoom> GetAllCabinRooms();
         void AddCabinRoom(CabinRoomDTO cabinRoomDTO);
         void DeleteCabinRoom(int cabinId);
-        void UpdateEmployeeCabinAllocationStatus(bool toAllocate, CabinRoomDTO seat);
+        void UpdateEmployeeCabinAllocationStatus(int cabinId, int? employeeId);
     }
 }

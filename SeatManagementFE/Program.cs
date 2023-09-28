@@ -11,6 +11,7 @@ namespace SeatManagementConsole
         static void Main(string[] args)
         {
             OnboardItems onboardItems = new OnboardItems();
+            EmployeeManager manage = new EmployeeManager();
             Console.WriteLine("Welcome to Asset management system\n");
             int choice;
             do
@@ -44,7 +45,7 @@ namespace SeatManagementConsole
                         onboardItems.OnboardEmployee();
                         break;
                     case 6:
-                        ManageEmployee();
+                        manage.ManageEmployee();
                         break;
                     case 7:
                         ViewReports();
@@ -60,55 +61,7 @@ namespace SeatManagementConsole
             } while (choice != 0);
 
         }
-
-
-        public static void ManageEmployee()
-        {
-
-            Console.WriteLine("Available Facilities: ");
-            IEntityManager<Facility> fac = new EntityManager<Facility>("Facility/");
-            var facilities = fac.Get();
-            foreach (var c in facilities)
-            {
-                Console.WriteLine($"{c.FacilityId} {c.FacilityName}");
-            }
-            Console.WriteLine("Choose facilty to onboard employee");
-            int facilityId = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Enter employee id");
-            var empid = Convert.ToInt32(Console.ReadLine());
-
-            EmployeeManager manage = new EmployeeManager();
-
-
-            Console.WriteLine(
-                "\n 1--> Allocate employee to  Seat " +
-                "\n 2--> Allocate employee to  Cabin " +
-                "\n 3--> Deallocate employee From Seat " +
-                "\n 4--> Deallocate employee From Cabin " +
-                "\n 0-->exit");
-            int choice = Convert.ToInt32(Console.ReadLine());
-            switch (choice)
-            {
-                case 1:
-                    manage.AllocateToSeat(facilityId, empid);
-                    break;
-                case 2:
-                    manage.AllocateToCabin(facilityId, empid);
-                    break;
-                case 3:
-                    manage.DeallocateFromSeat(facilityId, empid);
-                    break;
-                case 4:
-                    manage.DeallocateFromCabin(facilityId, empid);
-                    break;
-                case 0:
-                    //Environment.Exit(0);
-                    break;
-            }
-        }
-
-        public static void ViewReports()
+       public static void ViewReports()
         {
 
             GetReports getreport = new GetReports();
@@ -177,29 +130,3 @@ namespace SeatManagementConsole
         }
     }
 }
-
-
-
-/*switch (choice)
-{
-    case 1:
-        var allocatedseatsreport = getreport.GetAllocatedSeatsReport();
-        viewreport.ViewAllocatedSeatsReport(allocatedseatsreport);
-        break;
-    case 2:
-        var unallocatedseatsreport = getreport.GetFreeSeatsReport();
-        viewreport.ViewUnallocatedSeatsReport(unallocatedseatsreport);
-        break;
-    case 3:
-        var allocatedcabinsreport = getreport.GetAllocatedCabinsReport();
-        viewreport.ViewAllocatedCabinsReport(allocatedcabinsreport);
-        break;
-    case 4:
-        var unallocatedcabinsreport = getreport.GetFreeCabinsReport();
-        viewreport.ViewUnallocatedCabinsReport(unallocatedcabinsreport);
-        break;
-
-    case 0:
-        //Environment.Exit(0);
-        break;
-}*/

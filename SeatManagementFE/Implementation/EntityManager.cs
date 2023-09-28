@@ -25,5 +25,10 @@ namespace SeatManagementFE.Implementation
         {
             return _apiCall.UpdateData(obj);
         }
+
+        public bool PatchEmployeeDetails(int assetId, int? employeeId)
+        {
+            return _apiCall.UpdateAssetData(assetId, employeeId);
+        }
     }
 }

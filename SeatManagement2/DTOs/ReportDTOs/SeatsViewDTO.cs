@@ -8,7 +8,5 @@
         public string FacilityName { get; set; }
         public int SeatNumber { get; set; }
         public int? EmployeeId { get; set; }
-
-
     }
 }

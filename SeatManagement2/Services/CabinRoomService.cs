@@ -57,73 +57,51 @@ namespace SeatManagement2.Services
                 _repository.Save();
             }
         }
-        public void UpdateEmployeeCabinAllocationStatus(bool toAllocate, CabinRoomDTO cabin)
+        public void UpdateEmployeeCabinAllocationStatus(int cabinId, int? employeeId)
         {
-            var reqCabin = _repository.GetAll().FirstOrDefault(c => c.CabinNumber == cabin.CabinNumber && c.FacilityId == cabin.FacilityId);
+            var reqCabin = _repository.GetAll().FirstOrDefault(c=>c.CabinId==cabinId);
             if (reqCabin == null)
             {
                 throw new ResourceNotFoundException("Cabin not found.");
             }
-            if (toAllocate)
+            if (!reqCabin.EmployeeId.HasValue)
             {
-                AllocateEmployeeToCabin(reqCabin, cabin);
+                AllocateEmployeeToCabin(reqCabin, employeeId);
             }
             else
             {
-                DeallocateEmployeeFromCabin(reqCabin, cabin);
+                DeallocateEmployeeFromCabin(reqCabin);
             }
 
         }
-
-        public void DeallocateEmployeeFromCabin(CabinRoom reqcabin, CabinRoomDTO cabin)
-
-        {
-            if (reqcabin.EmployeeId == null)
-            {
-                throw new BadRequestException("Cabin is not allocated to any employee.");
-            }
-
-            var emp = _employeerepo.GetAll().FirstOrDefault(e => e.EmployeeId == cabin.EmployeeId);
-            if (emp == null)
-            {
-                throw new ResourceNotFoundException("Employee not found.");
-            }
-            reqcabin.EmployeeId = null;
-
-            if (emp.IsAllocated == false)
-            {
-                throw new BadRequestException("Employee is not allocated");
-            }
-            emp.IsAllocated = false;
-            _employeerepo.Update(emp);
-
-            _repository.Update(reqcabin);
-            _repository.Save();
-        }
-
-        public void AllocateEmployeeToCabin(CabinRoom reqcabin, CabinRoomDTO cabin)
+        public void AllocateEmployeeToCabin(CabinRoom reqcabin, int? employeeId)
         {
 
-            if (reqcabin.EmployeeId != null)
-            {
-                throw new BadRequestException("Cabin is already allocated");
-            }
-            var emp = _employeerepo.GetById(cabin.EmployeeId);
-            if (emp == null)
-            {
-                throw new ResourceNotFoundException("Employee not found.");
-            }
-            if (emp.IsAllocated == true)
-            {
-                throw new BadRequestException("Employee is already allocated");
-            }
-            reqcabin.EmployeeId = cabin.EmployeeId;
+            var emp = _employeerepo.GetAll().Where(e => e.EmployeeId == employeeId).FirstOrDefault() ?? throw new ResourceNotFoundException("Employee not found.");
+            if (reqcabin.EmployeeId != null) { throw new BadRequestException("Cabin is already allocated"); }
+            if (emp.IsAllocated == true) { throw new BadRequestException("Employee is already allocated"); }
 
+            reqcabin.EmployeeId = employeeId;
             emp.IsAllocated = true;
             _employeerepo.Update(emp);
-
             _repository.Update(reqcabin);
             _repository.Save();
         }
+
+        public void DeallocateEmployeeFromCabin(CabinRoom reqcabin)
+
+        {
+            var emp = _employeerepo.GetAll().FirstOrDefault(e => e.EmployeeId == reqcabin.EmployeeId) ?? throw new ResourceNotFoundException("Employee not found.");
+            if (reqcabin.EmployeeId == null) {throw new BadRequestException("Cabin is not allocated to any employee.");}
+            if (emp.IsAllocated == false) { throw new BadRequestException("Employee is not allocated");}
+           
+            reqcabin.EmployeeId = null;
+            emp.IsAllocated = false;
+            _employeerepo.Update(emp);
+            _repository.Update(reqcabin);
+            _repository.Save();
+        }
+
+    
     }
 }
