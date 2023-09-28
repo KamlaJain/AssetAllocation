@@ -2,11 +2,6 @@
 using SeatManagement2.Models;
 using SeatManagementFE.Implementation;
 using SeatManagementFE.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeatManagementFE
 {

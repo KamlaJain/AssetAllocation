@@ -1,7 +1,4 @@
-﻿using Humanizer;
-using Microsoft.EntityFrameworkCore.Migrations;
-using SeatManagement2.Models;
-using System.Diagnostics.Metrics;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 

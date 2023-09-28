@@ -2,12 +2,6 @@
 using SeatManagement2.Models;
 using SeatManagementFE.Implementation;
 using SeatManagementFE.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 
 namespace SeatManagementFE
 {
@@ -37,14 +31,16 @@ namespace SeatManagementFE
         public void RemoveAmenityFromMeetingRoom(int meetingroomId, int facilityId)
         {
             Console.WriteLine("Alloted amenities in rooms");
-            IEntityManager<RoomAmenity> roomAmenities= new EntityManager<RoomAmenity>("Amenity"); 
+            IEntityManager<RoomAmenity> roomAmenities = new EntityManager<RoomAmenity>("Amenity");
             var amenitiesInRoom = roomAmenities.Get();
             var requiredAmenities = amenitiesInRoom.Where(r => r.MeetingRoomId == meetingroomId && r.FacilityId == facilityId);
-            foreach (var am in requiredAmenities) { 
-                Console.WriteLine($"Facility Id: {am.FacilityId} || Meeting roomId: {am.MeetingRoomId} || Ameninty Id: {am.AmenityId}"); 
+            foreach (var am in requiredAmenities)
+            {
+                Console.WriteLine($"Facility Id: {am.FacilityId} || Meeting roomId: {am.MeetingRoomId} || Ameninty Id: {am.AmenityId}");
             };
             IEntityManager<RoomAmenityDTO> amenity = new EntityManager<RoomAmenityDTO>("Amenity");
-            if (requiredAmenities.Count() != 0) {
+            if (requiredAmenities.Count() != 0)
+            {
                 Console.WriteLine("Choose id of Amenity to removed");
                 var amenityId = Convert.ToInt32(Console.ReadLine());
                 var roomAmenity = new RoomAmenityDTO()

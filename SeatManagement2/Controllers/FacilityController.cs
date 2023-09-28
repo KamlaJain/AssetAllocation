@@ -1,11 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NuGet.Protocol.Core.Types;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SeatManagement2.DTOs;
-using SeatManagement2.Models;
-using SeatManagement2.Interfaces;
-using SeatManagement2.Services;
-using Microsoft.AspNetCore.Authorization;
 using SeatManagement2.Exceptions;
+using SeatManagement2.Interfaces;
 
 namespace SeatManagement2.Controllers
 {
@@ -19,7 +16,7 @@ namespace SeatManagement2.Controllers
 
         public FacilityController(IFacilityService ifacility)
         {
-           _facility = ifacility;
+            _facility = ifacility;
         }
         [HttpGet]
         public IActionResult Index()
@@ -43,8 +40,8 @@ namespace SeatManagement2.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }   
-        
+        }
+
         [HttpDelete("{facId}")]
         [Authorize(Policy = "AdminOnly")]
         public IActionResult Delete(int facId)

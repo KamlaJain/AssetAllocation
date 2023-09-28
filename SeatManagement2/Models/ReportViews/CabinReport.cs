@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SeatManagement2.DTOs;
 using SeatManagement2.DTOs.ReportDTOs;
 using SeatManagement2.Interfaces;
 

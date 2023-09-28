@@ -1,8 +1,6 @@
-﻿using SeatManagement2.DTOs;
-
-namespace SeatManagement2
+﻿namespace SeatManagement2
 {
-    public interface IRepository<T> where T: class
+    public interface IRepository<T> where T : class
     {
         void Add(T classObj);
         IQueryable<T> GetAll();

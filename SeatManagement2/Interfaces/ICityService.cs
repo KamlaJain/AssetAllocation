@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SeatManagement2.DTOs;
+﻿using SeatManagement2.DTOs;
 using SeatManagement2.Models;
 
 namespace SeatManagement2.Interfaces
@@ -8,7 +7,5 @@ namespace SeatManagement2.Interfaces
     {
         List<CityLookUp> IndexCity();
         void AddCity(CityLookUpDTO cityLookUpDTO);
-        void EditCity(string cityCode, CityLookUpDTO updatedCity);
-
     }
 }

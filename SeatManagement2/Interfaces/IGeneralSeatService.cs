@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SeatManagement2.DTOs;
+﻿using SeatManagement2.DTOs;
 using SeatManagement2.Models;
 
 namespace SeatManagement2.Interfaces
@@ -10,6 +9,6 @@ namespace SeatManagement2.Interfaces
         void AddGeneralSeat(GeneralSeatDTO generalSeatDTO);
         void DeleteGeneralSeat(int seatId);
         void UpdateEmployeeSeatAllocationStatus(bool toAllocate, GeneralSeatDTO seat);
-     
+
     }
 }

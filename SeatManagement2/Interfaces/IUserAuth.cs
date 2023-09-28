@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SeatManagement2.Models;
+﻿using SeatManagement2.Models;
 using System.Security.Claims;
 
 namespace SeatManagement2.Interfaces

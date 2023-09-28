@@ -1,10 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SeatManagement2.DTOs;
-using SeatManagement2.Models;
 using SeatManagement2.Interfaces;
-using SeatManagement2.Services;
-using Microsoft.AspNetCore.Authorization;
-using SeatManagement2.Exceptions;
 
 namespace SeatManagement2.Controllers
 {
@@ -21,6 +16,7 @@ namespace SeatManagement2.Controllers
 
         [HttpGet]
         public IActionResult GetAll()
+
         {
             return Ok(_amenityService.GetAllAmenities());
         }
@@ -33,11 +29,11 @@ namespace SeatManagement2.Controllers
                 _amenityService.AddAmenity(amenityName);
                 return Ok();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
-       
+
     }
 }

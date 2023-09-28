@@ -19,9 +19,9 @@ namespace SeatManagement2.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index([FromQuery] int pageNumber,[FromQuery] int pageSize)
+        public IActionResult Index([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            return Ok(_employeeService.GetAllEmployees(pageNumber,pageSize));
+            return Ok(_employeeService.GetAllEmployees(pageNumber, pageSize));
         }
 
         [HttpPost]

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SeatManagement2.Interfaces;
 using SeatManagement2.DTOs.ReportDTOs;
+using SeatManagement2.Interfaces;
 
 namespace SeatManagement2.Models.ReportViews
 {

@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SeatManagement2.DTOs;
-using SeatManagement2.Models;
-using SeatManagement2.Interfaces;
+﻿using SeatManagement2.DTOs;
 using SeatManagement2.Exceptions;
+using SeatManagement2.Interfaces;
+using SeatManagement2.Models;
 
 namespace SeatManagement2.Services
 {
@@ -23,7 +22,7 @@ namespace SeatManagement2.Services
         public void AddBuilding(BuildingLookUpDTO buildingLookUpDTO)
         {
             var reqBuilding = _repository.GetAll().Any(b => b.BuildingName == buildingLookUpDTO.BuildingName && b.BuildingCode == buildingLookUpDTO.BuildingCode);
-            if (reqBuilding)
+            if (!reqBuilding)
             {
                 throw new BadRequestException("Building already exists");
             }
@@ -35,26 +34,6 @@ namespace SeatManagement2.Services
             _repository.Add(item);
             _repository.Save();
         }
-
-
-        public void EditBuilding(string buildingcode, BuildingLookUpDTO updatedBuilding)
-        {
-            var item = _repository.GetAll().FirstOrDefault(c => c.BuildingCode == buildingcode);
-            if (item == null)
-            {
-                throw new ResourceNotFoundException("Invalid Building");
-            }
-            else
-            {
-                item.BuildingName = updatedBuilding.BuildingName;
-                item.BuildingCode = updatedBuilding.BuildingCode;
-
-                _repository.Update(item);
-                _repository.Save();
-            }
-        }
-
     }
-
 }
 

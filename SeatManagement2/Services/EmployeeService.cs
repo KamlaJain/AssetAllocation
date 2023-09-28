@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SeatManagement2.DTOs;
+﻿using SeatManagement2.DTOs;
 using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
@@ -11,7 +8,7 @@ namespace SeatManagement2.Services
     public class EmployeeService : IEmployeeService
     {
         private readonly IRepository<Employee> _repository;
-       private readonly IRepository<DepartmentLookUp> _departmentrepository;
+        private readonly IRepository<DepartmentLookUp> _departmentrepository;
         public EmployeeService(IRepository<Employee> repository, IRepository<DepartmentLookUp> departmentrepository)
         {
             _repository = repository;
@@ -20,7 +17,7 @@ namespace SeatManagement2.Services
 
         public List<Employee> GetAllEmployees(int pageNumber, int pageSize)
         {
-            var paginatedEmployeeList= _repository
+            var paginatedEmployeeList = _repository
                 .GetAll()
                 .Skip((pageNumber - 1) * pageSize)
                 .Take(pageSize)
@@ -61,7 +58,7 @@ namespace SeatManagement2.Services
                 _repository.Save();
             }
         }
-        
+
     }
 }
 

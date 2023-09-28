@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using SeatManagement2.DTOs;
+﻿using SeatManagement2.DTOs;
 using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
@@ -35,23 +33,6 @@ namespace SeatManagement2.Services
             };
             _repository.Add(item);
             _repository.Save();
-        }
-
-        public void EditCity(string cityCode, CityLookUpDTO updatedCity)
-        {
-            var item = _repository.GetAll().FirstOrDefault(c => c.CityCode == cityCode);
-            if (item == null)
-            {
-                throw new ResourceNotFoundException("Invalid City");
-            }
-            else
-            {
-                item.CityName = updatedCity.CityName;
-                item.CityCode = updatedCity.CityCode;
-
-                _repository.Update(item);
-                _repository.Save();
-            }
         }
 
     }

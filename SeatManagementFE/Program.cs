@@ -1,19 +1,7 @@
-﻿using Newtonsoft.Json;
-using SeatManagement2.Controllers;
-using SeatManagement2.Models;
-using SeatManagementFE.Interfaces;
-using SeatManagementFE.Implementation;
-using System.IO;
-using System.Net.Http.Headers;
-using System.Security.Cryptography.X509Certificates;
+﻿using SeatManagement2.Models;
 using SeatManagementFE;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Components.Forms;
-using System;
-using System.Collections.Generic;
-using System.Composition;
-using SeatManagement2.Interfaces;
-using SeatManagement2.Models.ReportViews;
+using SeatManagementFE.Implementation;
+using SeatManagementFE.Interfaces;
 
 namespace SeatManagementConsole
 {
@@ -132,70 +120,27 @@ namespace SeatManagementConsole
                "\n 4-->Unallocated Cabins " +
                "\n 0-->exit");
             int choice = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Apply Filters?" +
-                 "\n 1-->Yes " +
-                 "\n 2-->No ");
-            int option = Convert.ToInt32(Console.ReadLine());
 
-            
-
-            if (option == 2)
+            switch (choice)
             {
-                switch (choice)
-                {
-                    case 1:
-                        getreport.GetAllocatedSeatsReport();
-                        //viewreport.ViewAllocatedSeatsReport(allocatedseatsreport);
-                        break;
-                    case 2:
-                        getreport.GetFreeSeatsReport();
-                        //viewreport.ViewUnallocatedSeatsReport(unallocatedseatsreport);
-                        break;
-                    case 3:
-                        getreport.GetAllocatedCabinsReport();
-                        //viewreport.ViewAllocatedCabinsReport(allocatedcabinsreport);
-                        break;
-                    case 4:
-                         getreport.GetFreeCabinsReport();
-                        //viewreport.ViewUnallocatedCabinsReport(unallocatedcabinsreport);
-                        break;
+                case 1:
+                    getreport.GetAllocatedSeatsReport();
+                    break;
+                case 2:
+                    getreport.GetFreeSeatsReport();
+                    break;
+                case 3:
+                    getreport.GetAllocatedCabinsReport();
+                    break;
+                case 4:
+                    getreport.GetFreeCabinsReport();
+                    break;
 
-                    case 0:
-                        //Environment.Exit(0);
-                        break;
-                }
+                case 0:
+                    //Environment.Exit(0);
+                    break;
             }
-            else if (option == 1)
-            {
-                ReportFilter filter = new ReportFilter();
-                Console.WriteLine(
-                "\n 1-->Filter by City " +
-                "\n 2-->Filter by Building " +
-                "\n 3-->Filter By Floor " +
-                "\n 4-->Filter by facility Name" +
-                "\n 0-->Exit");
 
-
-                int filteroption = Convert.ToInt32(Console.ReadLine());
-                switch (filteroption)
-                {
-                    case 1:
-                        filter.CityFilter();
-                        break;
-                    case 2:
-                        filter.BuildingFilter();
-                        break;
-                    case 3:
-                        filter.FloorFilter();
-                        break;
-                    case 4:
-                        filter.FacilityNameFilter();
-                        break;
-                    case 0:
-                        //Environment.Exit(0);
-                        break;
-                }
-            }
 
         }
 

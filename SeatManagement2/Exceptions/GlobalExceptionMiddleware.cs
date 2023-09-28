@@ -24,9 +24,9 @@ namespace SeatManagement2.Exceptions
             catch
             {
                 context.Response.ContentType = "application/json";
-                var errorResponse = new 
+                var errorResponse = new
                 {
-                    statusCode =(int)HttpStatusCode.InternalServerError,
+                    statusCode = (int)HttpStatusCode.InternalServerError,
                     message = "Internal Server Error"
                 };
 
@@ -34,7 +34,7 @@ namespace SeatManagement2.Exceptions
                 var result = JsonSerializer.Serialize(errorResponse);
                 await context.Response.WriteAsync(result);
             }
-           
+
         }
     }
 }

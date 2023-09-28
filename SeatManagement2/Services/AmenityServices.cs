@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SeatManagement2.DTOs;
+﻿using SeatManagement2.DTOs;
 using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;

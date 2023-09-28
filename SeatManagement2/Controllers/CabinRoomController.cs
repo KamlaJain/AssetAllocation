@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SeatManagement2.Models;
-using SeatManagement2.Interfaces;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SeatManagement2.DTOs;
-using SeatManagement2.Services;
-using Microsoft.AspNetCore.Authorization;
 using SeatManagement2.Exceptions;
+using SeatManagement2.Interfaces;
 
 namespace SeatManagement2.Controllers
 {
@@ -79,7 +77,7 @@ namespace SeatManagement2.Controllers
 
         [HttpGet]
         [Route("Reports")]
-        public IActionResult GetReports([FromQuery] bool isUnallocatedReport, [FromQuery] string? cityCode,  [FromQuery] string? buildingCode, [FromQuery] string? facilityName, [FromQuery] int? floorNumber)
+        public IActionResult GetReports([FromQuery] bool isUnallocatedReport, [FromQuery] string? cityCode, [FromQuery] string? buildingCode, [FromQuery] string? facilityName, [FromQuery] int? floorNumber)
         {
             try
             {

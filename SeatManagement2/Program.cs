@@ -1,11 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using SeatManagement2;
-using SeatManagement2.Models;
-using SeatManagement2.Services;
-using SeatManagement2.Interfaces;
 using SeatManagement2.Exceptions;
-using SeatManagement2.DTOs;
+using SeatManagement2.Interfaces;
+using SeatManagement2.Models;
 using SeatManagement2.Models.ReportViews;
+using SeatManagement2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 

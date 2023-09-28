@@ -1,8 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using SeatManagement2.Interfaces;
-
-namespace SeatManagement2.DTOs.ReportDTOs
+﻿namespace SeatManagement2.DTOs.ReportDTOs
 {
     public class SeatsViewDTO
     {

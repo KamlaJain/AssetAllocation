@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SeatManagement2.DTOs;
-using SeatManagement2.Models;
-using SeatManagement2.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SeatManagement2.Exceptions;
+using SeatManagement2.Interfaces;
 
 namespace SeatManagement2.Controllers
 {

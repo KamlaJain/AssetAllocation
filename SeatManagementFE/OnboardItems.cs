@@ -2,17 +2,12 @@
 using SeatManagement2.Models;
 using SeatManagementFE.Implementation;
 using SeatManagementFE.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SeatManagementFE
 {
     public class OnboardItems
     {
-       
+
         public void OnboardFacility()
         {
 
@@ -26,10 +21,10 @@ namespace SeatManagementFE
             Console.WriteLine("Choose city to add your facility ");
             int cityId = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Available Buildings: "); 
+            Console.WriteLine("Available Buildings: ");
             IEntityManager<BuildingLookUp> building = new EntityManager<BuildingLookUp>("Building/");
             var buildings = building.Get();
-          
+
 
             foreach (var b in buildings)
             {
@@ -104,7 +99,7 @@ namespace SeatManagementFE
                 CabinNumber = cabinnumber,
                 FacilityId = facilityId,
             };
-            cabin.Add(croom); 
+            cabin.Add(croom);
             Console.WriteLine("Cabin Added");
         }
 
@@ -129,7 +124,7 @@ namespace SeatManagementFE
                 SeatNumber = seatnumber,
                 FacilityId = facilityId,
             };
-            seat.Add(gseat); 
+            seat.Add(gseat);
             Console.WriteLine("Seat added");
         }
 

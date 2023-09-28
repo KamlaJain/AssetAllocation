@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SeatManagement2.DTOs;
-using SeatManagement2.Models;
-using SeatManagement2.Interfaces;
+﻿using SeatManagement2.DTOs;
 using SeatManagement2.Exceptions;
+using SeatManagement2.Interfaces;
+using SeatManagement2.Models;
 
 namespace SeatManagement2.Services
 {

@@ -1,7 +1,4 @@
-﻿using SeatManagement2.Models;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace SeatManagement2.DTOs
+﻿namespace SeatManagement2.DTOs
 {
     public class FacilityDTO
     {

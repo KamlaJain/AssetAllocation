@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using SeatManagement2.DTOs;
+﻿using SeatManagement2.DTOs;
 using SeatManagement2.Models;
 
 namespace SeatManagement2.Interfaces

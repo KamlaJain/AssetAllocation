@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
-using System.Security.Claims;
 
 namespace SeatManagement2.Controllers
 {

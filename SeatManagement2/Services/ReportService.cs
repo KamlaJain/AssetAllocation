@@ -1,10 +1,5 @@
-﻿using NuGet.Protocol.Core.Types;
-using SeatManagement2.DTOs;
-using SeatManagement2.DTOs.ReportDTOs;
-using SeatManagement2.Exceptions;
+﻿using SeatManagement2.DTOs.ReportDTOs;
 using SeatManagement2.Interfaces;
-using SeatManagement2.Models;
-using System.Composition;
 
 namespace SeatManagement2.Services
 {
@@ -23,6 +18,22 @@ namespace SeatManagement2.Services
         public List<SeatsViewDTO> GenerateSeatsReport(bool isUnallocatedReport, string? cityCode, string? buildingCode, string? facilityName, int? floorNumber)
         {
             var report = _seatsview.GetSeatsReport();
+            if (isUnallocatedReport)
+            {
+                report = report.Where(s => s.EmployeeId == null);
+            }
+            else
+            {
+                report = report.Where(s => s.EmployeeId != null);
+            }
+
+            report = NewMethod(cityCode, buildingCode, facilityName, floorNumber, report);
+
+            return report.ToList();
+        }
+
+        private static IQueryable<SeatsViewDTO> NewMethod(string? cityCode, string? buildingCode, string? facilityName, int? floorNumber, IQueryable<SeatsViewDTO> report)
+        {
             if (cityCode != null)
             {
                 report = report.Where(s => s.CityCode == cityCode);
@@ -39,20 +50,22 @@ namespace SeatManagement2.Services
             {
                 report = report.Where(s => s.FloorNumber == floorNumber);
             }
-            if (isUnallocatedReport)
-            {
-                report = report.Where(s => s.EmployeeId == null);
-            }
-            if(!isUnallocatedReport)
-            {
-                report = report.Where(s => s.EmployeeId != null);
-            }
-            return report.ToList();
+
+            return report;
         }
 
         public List<CabinsViewDTO> GenerateCabinsReport(bool isUnallocatedReport, string? cityCode, string? buildingCode, string? facilityName, int? floorNumber)
         {
             var report = _cabinsview.GetCabinsReport();
+            if (isUnallocatedReport)
+            {
+                report = report.Where(s => s.EmployeeId == null);
+            }
+            else
+            {
+                report = report.Where(s => s.EmployeeId != null);
+            }
+
             if (cityCode != null)
             {
                 report = report.Where(s => s.CityCode == cityCode);
@@ -69,14 +82,7 @@ namespace SeatManagement2.Services
             {
                 report = report.Where(s => s.FloorNumber == floorNumber);
             }
-            if (isUnallocatedReport)
-            {
-                report = report.Where(s => s.EmployeeId == null);
-            }
-            if (!isUnallocatedReport)
-            {
-                report = report.Where(s => s.EmployeeId != null);
-            }
+
             return report.ToList();
         }
     }

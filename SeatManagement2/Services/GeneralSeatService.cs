@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using SeatManagement2.DTOs;
+﻿using SeatManagement2.DTOs;
 using SeatManagement2.Exceptions;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Models;
@@ -85,7 +82,7 @@ namespace SeatManagement2.Services
             {
                 throw new BadRequestException("No employee in seat to deallocate");
             }
-     
+
             emp.IsAllocated = false;
             _employeerepo.Update(emp);
 

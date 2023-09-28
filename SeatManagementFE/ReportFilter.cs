@@ -1,16 +1,4 @@
-﻿using SeatManagement2.Models;
-using SeatManagementFE;
-using SeatManagementFE.Implementation;
-using SeatManagementFE.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Composition;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace SeatManagementFE
+﻿namespace SeatManagementFE
 {
     public class ReportFilter
     {
@@ -39,7 +27,7 @@ namespace SeatManagementFE
         public string FacilityNameFilter()
         {
             Console.WriteLine("Enter Facility Name to filter");
-            string facilityName = Console.ReadLine().ToUpper();
+            string facilityName = Console.ReadLine();
             if (facilityName == "")
             {
                 return null;
@@ -50,12 +38,12 @@ namespace SeatManagementFE
         public int FloorFilter()
         {
             Console.WriteLine("Enter Floor to filter");
-            int floor = Convert.ToInt32(Console.ReadLine());
-            if (floor == 0)
+            string floor = Console.ReadLine();
+            if (floor == "")
             {
                 return 0;
             }
-            return floor;
+            return Convert.ToInt32(floor);
         }
     }
 }

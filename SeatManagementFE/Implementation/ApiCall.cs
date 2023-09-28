@@ -1,12 +1,6 @@
-﻿using SeatManagementFE.Interfaces;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using Newtonsoft.Json;
+using SeatManagementFE.Interfaces;
 using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace SeatManagementFE.Implementation
@@ -45,8 +39,8 @@ namespace SeatManagementFE.Implementation
 
             var response = client.PostAsync(endPoint, content).Result;
 
-            var responseContent = response.Content.ReadAsStringAsync().Result; 
-            if (int.TryParse(responseContent, out int res)) 
+            var responseContent = response.Content.ReadAsStringAsync().Result;
+            if (int.TryParse(responseContent, out int res))
             {
                 return res;
             }
@@ -58,7 +52,7 @@ namespace SeatManagementFE.Implementation
             var json = JsonSerializer.Serialize(data);
 
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-        
+
             var response = client.PatchAsync(endPoint, content).Result;
 
             var responseContent = response.Content.ReadAsStringAsync();
