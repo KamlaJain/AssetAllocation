@@ -1,4 +1,5 @@
 ﻿using SeatManagement2.Models;
+using SeatManagementFE;
 using SeatManagementFE.Implementation;
 using SeatManagementFE.Interfaces;
 using System;
@@ -13,99 +14,48 @@ namespace SeatManagementFE
 {
     public class ReportFilter
     {
-        public void BuildingFilter(int choice)
+        public string CityFilter()
         {
-            GetReports getreports = new GetReports();
-            ViewReports viewreports = new ViewReports();
-            Console.WriteLine("Available Buildings: ");
-            IEntityManager<BuildingLookUp> building = new EntityManager<BuildingLookUp>("BuildingLookUp/");
-            var buildings = building.Get();
-            foreach (var b in buildings)
-            {
-                Console.WriteLine($"{b.BuildingId} {b.BuildingName}");
-            }
-            Console.WriteLine("Choose building ");
-            int buildingId = Convert.ToInt32(Console.ReadLine());
-            var buildingtofilter = buildings.First(b => b.BuildingId == buildingId);
+            Console.WriteLine("Enter City Abbrevation to filter");
+            string cityAbbr = Console.ReadLine().ToUpper();
 
-            if (buildingtofilter == null)
+            if (cityAbbr == "")
             {
-                Console.WriteLine("Enter Valid BuildingId");
+                return null;
             }
-            else
-            {
-                if (choice == 1)
-                {
-                    var reports = getreports.GetAllocatedSeatsReport().Where(r => r.BuildingCode == buildingtofilter.BuildingCode);
-                    viewreports.ViewAllocatedReport(reports.ToList());
-                }
-                if(choice == 2)
-                {
-                    var reports = getreports.GetFreeSeatsReport().Where(r => r.BuildingCode == buildingtofilter.BuildingCode);
-                    viewreports.ViewUnallocatedReport(reports.ToList());
-                }
-            }
+            return cityAbbr;
         }
-        public void FloorFilter(int choice)
+        public string BuildingFilter()
         {
-            GetReports getreports = new GetReports();
-            ViewReports viewreports = new ViewReports();
-            Console.WriteLine("Enter floor ");
-            int floornumber = Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Enter Building Abbrevation to filter");
+            string buildingAbbr = Console.ReadLine().ToUpper();
 
-            IEntityManager<Facility> fac = new EntityManager<Facility>("Facility/");
-            var facility = fac.Get(); 
-
-            var floortofilter= facility.Where(b => b.FloorNumber == floornumber);
-
-            if (floortofilter == null)
+            if (buildingAbbr == "")
             {
-                Console.WriteLine("Enter Valid Floor Number");
+                return null;
             }
-            else
-            {
-                if (choice == 1)
-                {
-                    var reports = getreports.GetAllocatedSeatsReport().Where(r => r.FloorNumber == floornumber);
-                    viewreports.ViewAllocatedReport(reports.ToList());
-                }
-                if (choice == 2)
-                {
-                    var reports = getreports.GetFreeSeatsReport().Where(r => r.FloorNumber == floornumber);
-                    viewreports.ViewUnallocatedReport(reports.ToList());
-                }
-            }
+            return buildingAbbr;
         }
-        public void FacilityNameFilter(int choice)
+        public string FacilityNameFilter()
         {
-            GetReports getreports = new GetReports();
-            ViewReports viewreports = new ViewReports();
-            Console.WriteLine("Enter Facility Name ");
-            string facilitynameinput = Console.ReadLine();
-
-            IEntityManager<Facility> fac = new EntityManager<Facility>("Facility/");
-            var facility = fac.Get();
-
-            var facilitytofilter = facility.Where(b => b.FacilityName == facilitynameinput);
-
-            if (facilitytofilter == null)
+            Console.WriteLine("Enter Facility Name to filter");
+            string facilityName = Console.ReadLine().ToUpper();
+            if (facilityName == "")
             {
-                Console.WriteLine("Enter Valid Facility Name");
+                return null;
             }
-            else
-            {
-                if (choice == 1)
-                {
-                    var reports = getreports.GetAllocatedSeatsReport().Where(r => r.FacilityName == facilitynameinput);
-                    viewreports.ViewAllocatedReport(reports.ToList());
-                }
-                if (choice == 2)
-                {
-                    var reports = getreports.GetFreeSeatsReport().Where(r => r.FacilityName == facilitynameinput);
-                    viewreports.ViewUnallocatedReport(reports.ToList());
-                }
-            }
+            return facilityName;
 
+        }
+        public int FloorFilter()
+        {
+            Console.WriteLine("Enter Floor to filter");
+            int floor = Convert.ToInt32(Console.ReadLine());
+            if (floor == 0)
+            {
+                return 0;
+            }
+            return floor;
         }
     }
 }

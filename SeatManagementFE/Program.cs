@@ -12,6 +12,8 @@ using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
 using System.Composition;
+using SeatManagement2.Interfaces;
+using SeatManagement2.Models.ReportViews;
 
 namespace SeatManagementConsole
 {
@@ -33,7 +35,7 @@ namespace SeatManagementConsole
                     "\n5. Onboard Employee" +
                     "\n6. Allocate seats" +
                     "\n7. View Reports" +
-                    "\n7. Manage Amenities" +
+                    "\n8. Manage Amenities" +
                     "\n0. EXIT");
                 choice = Convert.ToInt32(Console.ReadLine());
                 switch (choice)
@@ -70,7 +72,6 @@ namespace SeatManagementConsole
             } while (choice != 0);
 
         }
-
 
 
         public static void ManageEmployee()
@@ -117,17 +118,18 @@ namespace SeatManagementConsole
                     //Environment.Exit(0);
                     break;
             }
-
         }
 
         public static void ViewReports()
         {
+
             GetReports getreport = new GetReports();
-            ViewReports viewreport = new ViewReports();
 
             Console.WriteLine("View Reports of " +
                "\n 1-->Allocated Seats " +
                "\n 2-->Unallocated Seats " +
+               "\n 3-->Allocated Cabins " +
+               "\n 4-->Unallocated Cabins " +
                "\n 0-->exit");
             int choice = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Apply Filters?" +
@@ -135,18 +137,29 @@ namespace SeatManagementConsole
                  "\n 2-->No ");
             int option = Convert.ToInt32(Console.ReadLine());
 
+            
+
             if (option == 2)
             {
                 switch (choice)
                 {
                     case 1:
-                        var allocatedreport = getreport.GetAllocatedSeatsReport();
-                        viewreport.ViewAllocatedReport(allocatedreport.ToList());
+                        getreport.GetAllocatedSeatsReport();
+                        //viewreport.ViewAllocatedSeatsReport(allocatedseatsreport);
                         break;
                     case 2:
-                        var unallocatedreport = getreport.GetFreeSeatsReport();
-                        viewreport.ViewUnallocatedReport(unallocatedreport.ToList());
+                        getreport.GetFreeSeatsReport();
+                        //viewreport.ViewUnallocatedSeatsReport(unallocatedseatsreport);
                         break;
+                    case 3:
+                        getreport.GetAllocatedCabinsReport();
+                        //viewreport.ViewAllocatedCabinsReport(allocatedcabinsreport);
+                        break;
+                    case 4:
+                         getreport.GetFreeCabinsReport();
+                        //viewreport.ViewUnallocatedCabinsReport(unallocatedcabinsreport);
+                        break;
+
                     case 0:
                         //Environment.Exit(0);
                         break;
@@ -156,9 +169,10 @@ namespace SeatManagementConsole
             {
                 ReportFilter filter = new ReportFilter();
                 Console.WriteLine(
-                "\n 1-->Filter by Building " +
-                "\n 2-->Filter By Floor " +
-                "\n 3-->Filter by facility Name" +
+                "\n 1-->Filter by City " +
+                "\n 2-->Filter by Building " +
+                "\n 3-->Filter By Floor " +
+                "\n 4-->Filter by facility Name" +
                 "\n 0-->Exit");
 
 
@@ -166,13 +180,16 @@ namespace SeatManagementConsole
                 switch (filteroption)
                 {
                     case 1:
-                        filter.BuildingFilter(choice);
+                        filter.CityFilter();
                         break;
                     case 2:
-                        filter.FloorFilter(choice);
+                        filter.BuildingFilter();
                         break;
                     case 3:
-                        filter.FacilityNameFilter(choice);
+                        filter.FloorFilter();
+                        break;
+                    case 4:
+                        filter.FacilityNameFilter();
                         break;
                     case 0:
                         //Environment.Exit(0);
@@ -198,7 +215,7 @@ namespace SeatManagementConsole
 
             Console.WriteLine("Choose Action: \n 1--> Add Amenity to meetingRoom \n 2--> Remove Amenity From MeetingRoom");
             int choice = Convert.ToInt32(Console.ReadLine());
-            
+
             AmenityManager manageAmenities = new AmenityManager();
             switch (choice)
             {
@@ -216,3 +233,28 @@ namespace SeatManagementConsole
     }
 }
 
+
+
+/*switch (choice)
+{
+    case 1:
+        var allocatedseatsreport = getreport.GetAllocatedSeatsReport();
+        viewreport.ViewAllocatedSeatsReport(allocatedseatsreport);
+        break;
+    case 2:
+        var unallocatedseatsreport = getreport.GetFreeSeatsReport();
+        viewreport.ViewUnallocatedSeatsReport(unallocatedseatsreport);
+        break;
+    case 3:
+        var allocatedcabinsreport = getreport.GetAllocatedCabinsReport();
+        viewreport.ViewAllocatedCabinsReport(allocatedcabinsreport);
+        break;
+    case 4:
+        var unallocatedcabinsreport = getreport.GetFreeCabinsReport();
+        viewreport.ViewUnallocatedCabinsReport(unallocatedcabinsreport);
+        break;
+
+    case 0:
+        //Environment.Exit(0);
+        break;
+}*/

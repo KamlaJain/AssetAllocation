@@ -17,7 +17,10 @@ namespace SeatManagement2.Exceptions
             {
                 await _next(context);
             }
-            
+            /* catch (Exception ex)
+             {
+                 
+             }*/
             catch
             {
                 context.Response.ContentType = "application/json";

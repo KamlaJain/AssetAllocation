@@ -19,7 +19,8 @@ namespace SeatManagement2.Services
         }
 
         public void AddAmenity(string amenityName)
-        {            
+        {
+            
             var item = new AmenityType
             {
                 AmenityName = amenityName

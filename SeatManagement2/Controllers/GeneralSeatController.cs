@@ -84,7 +84,7 @@ namespace SeatManagement2.Controllers
         {
             try
             {
-                //api/generalseat/reports/?isallocatedreport=true
+                ///api/GeneralSeat/Reports?isUnallocatedReport=true&cityCode=1&buildingCode=1&facilityName=1&floorNumber=10' \
                 return Ok(_reportService.GenerateSeatsReport(isUnallocatedReport, cityCode, buildingCode, facilityName, floorNumber));
 
             }

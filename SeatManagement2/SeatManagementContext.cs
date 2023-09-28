@@ -20,7 +20,7 @@ namespace SeatManagement2
         public DbSet<MeetingRoom> MeetingRooms { get; set; }
         public DbSet<RoomAmenity> RoomAmenities { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+       /* protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
             modelBuilder
@@ -38,8 +38,8 @@ namespace SeatManagement2
             modelBuilder
                 .Entity<UnallocatedCabinsView>()
                 .ToView("UnallocatedCabinsView")
-                .HasKey (e => new { e.FacilityName,e.CabinNumber});
-        }
+                .HasKey(e => new { e.FacilityName, e.CabinNumber });
+        }*/
 
     }
 }

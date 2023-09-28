@@ -26,7 +26,7 @@ namespace SeatManagementFE
             Console.WriteLine("Choose city to add your facility ");
             int cityId = Convert.ToInt32(Console.ReadLine());
 
-            Console.WriteLine("Available Buildings: "); //  ONLY LIST BUILDINGS WITH GIVEN CITY ID --> FETCH BUILDING FROM FACILITY TABLE
+            Console.WriteLine("Available Buildings: "); 
             IEntityManager<BuildingLookUp> building = new EntityManager<BuildingLookUp>("Building/");
             var buildings = building.Get();
           

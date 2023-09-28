@@ -50,10 +50,7 @@ namespace SeatManagement2.Controllers
             {
                 return NotFound(ex.Message);
             }
-            /* catch (Exception ex)
-             {
-                 return BadRequest(ex.Message);
-             }*/
+            
         }
 
     }

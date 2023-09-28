@@ -6,6 +6,7 @@
         public Repository(SeatManagementContext context)
         {
             _context = context;
+
         }
 
 
@@ -13,9 +14,10 @@
         {
             _context.Set<T>().Add(classobj);
         }
-        public List<T> GetAll()
+        public IQueryable<T> GetAll()
         {
-            return _context.Set<T>().ToList();
+            var data = _context.Set<T>();
+            return data;
         }
 
         public T GetById(int id)

@@ -4,6 +4,8 @@ using SeatManagement2.Models;
 using SeatManagement2.Services;
 using SeatManagement2.Interfaces;
 using SeatManagement2.Exceptions;
+using SeatManagement2.DTOs;
+using SeatManagement2.Models.ReportViews;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,10 +39,14 @@ builder.Services.AddSingleton<IRepository<CabinRoom>, Repository<CabinRoom>>();
 builder.Services.AddSingleton<IRepository<GeneralSeat>, Repository<GeneralSeat>>();
 builder.Services.AddSingleton<IRepository<MeetingRoom>, Repository<MeetingRoom>>();
 builder.Services.AddSingleton<IRepository<RoomAmenity>, Repository<RoomAmenity>>();
-builder.Services.AddSingleton<IRepository<AllocatedSeatsView>, Repository<AllocatedSeatsView>>();
-builder.Services.AddSingleton<IRepository<UnallocatedSeatsView>, Repository<UnallocatedSeatsView>>();
+
+builder.Services.AddSingleton<ISeatReport, SeatReport>();
+builder.Services.AddSingleton<ICabinReport, CabinReport>();
+
+/*builder.Services.AddSingleton<IRepository<UnallocatedSeatsView>, Repository<UnallocatedSeatsView>>();
 builder.Services.AddSingleton<IRepository<UnallocatedCabinsView>, Repository<UnallocatedCabinsView>>();
-builder.Services.AddSingleton<IRepository<AllocatedCabinsView>, Repository<AllocatedCabinsView>>();
+builder.Services.AddSingleton<IRepository<AllocatedCabinsView>, Repository<AllocatedCabinsView>>();*/
+
 
 builder.Services.AddSingleton<ICityService, CityService>();
 builder.Services.AddSingleton<IBuildingService, BuildingService>();

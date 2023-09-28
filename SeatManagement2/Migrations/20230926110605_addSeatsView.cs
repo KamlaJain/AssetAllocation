@@ -25,7 +25,6 @@ namespace SeatManagement2.Migrations
                 INNER JOIN
                     Facilitys F ON F.CityId = C.CityId
                 INNER JOIN
-
                     BuildingLookUps B ON F.BuildingId = B.BuildingId
                 INNER JOIN
                     GeneralSeats S ON F.FacilityId = S.FacilityId
