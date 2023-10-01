@@ -28,6 +28,14 @@ builder.Services.AddAuthorization(options =>
         policy => policy.RequireRole("Admin"));
 });
 
+builder.Services.AddCors(c => c.AddPolicy("CorsPolicy", corsBuilder =>
+{
+    corsBuilder
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowAnyOrigin();
+}));
+
 builder.Services.AddSingleton<IRepository<CityLookUp>, Repository<CityLookUp>>();
 builder.Services.AddSingleton<IRepository<BuildingLookUp>, Repository<BuildingLookUp>>();
 builder.Services.AddSingleton<IRepository<Facility>, Repository<Facility>>();
@@ -69,7 +77,10 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
+    app.UseSwagger(s =>
+    {
+        s.SerializeAsV2=true;
+    });
     app.UseSwaggerUI();
 }
 
@@ -78,6 +89,7 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors("CorsPolicy");
 
 app.MapControllers();
 app.UseMiddleware<GlobalExceptionMiddleware>();
